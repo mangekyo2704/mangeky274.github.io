@@ -1,0 +1,179 @@
+﻿@model FruitShopSolution.ViewModel.Catalog.Products.ProductInfoViewModel;
+@using FruitShopSolution.ViewModel.Catalog.Products.Manage;
+@{ 
+    Layout = "~View/Shared/_Layout.cshtml";
+    var request = new GetManageProductPagingRequest()
+    {
+        PageIndex=2,
+        PageSize=6
+    };
+}
+        <!------ All products ------>
+        <div class="small-container">
+
+            <div class="row row-2">
+                <h1>Tất Cả Sản Phẩm</h1>
+                <select name="Sort">
+                    <option selected>Sắp xếp theo giá</option>
+                    <option>Sắp xếp theo giá</option>
+                    <option>Sắp xếp theo giá</option>
+                    <option>Sắp xếp theo giá</option>
+                    <option>Sắp xếp theo giá</option>
+                </select>
+            </div>
+
+
+            <!------ Phân trang ------>
+            <div class="page-btn">
+                <?php
+                if($current_page > 3)
+                {
+                $first_page = 1;
+
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $first_page ?>"><span><strong>First</strong></span></a>
+                <?php
+                }
+                ?>
+
+                <?php
+                for($num = 1; $num <= $total_page; $num++)
+                {
+                if($num != $current_page)
+                {
+                if($num > $current_page - 3 && $num < $current_page + 3)
+                {
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span><?= $num ?></span></a>
+                <?php
+                }
+                }
+                else // Tô màu cho trang đã chọn
+                {
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span class="select"><?= $num ?></span></a>
+                <?php
+                }
+                }
+                ?>
+
+                <?php
+                if($current_page < $total_page - 3)
+                {
+                $end_page = $total_page;
+
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $end_page ?>"><span><strong>Last</strong></span></a>
+                <?php
+                }
+                ?>
+            </div>
+
+
+            <!------ Hiển thị toàn bộ sản phẩm ------>
+            <div class="row">
+                <?php
+                while ($row = $Products->fetch_array())
+                {
+                ?>
+                <div class="col-4 add-border">
+                    <a href="Product_detail.php?id=<?= $row['Pro_ID'] ?>">
+                        <img src="<?= $row['Pro_Img'] ?>">
+                        <h3><?= $row['Pro_Name'] ?></h3>
+                        <div class="rating">
+                            <?php
+                            Rating_Stars($row['Pro_Rate']);
+                            ?>
+                        </div>
+                        <p><?= number_format($row['Pro_Price'], 0, ",", ".") ?> VNĐ/1kg</p>
+                        <span>
+                            <a><i class="fa fa-cart-plus" onclick="Cart(<?= $row['Pro_ID'] ?>)"></i></a>
+                        </span>
+                    </a>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+
+
+            <!------ Phân trang ------>
+            <div class="page-btn">
+                <?php
+                if($current_page > 3)
+                {
+                $first_page = 1;
+
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $first_page ?>"><span><strong>First</strong></span></a>
+                <?php
+                }
+                ?>
+
+                <?php
+                for($num = 1; $num <= $total_page; $num++)
+                {
+                if($num != $current_page)
+                {
+                if($num > $current_page - 3 && $num < $current_page + 3)
+                {
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span><?= $num ?></span></a>
+                <?php
+                }
+                }
+                else // Tô màu cho trang đã chọn
+                {
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span class="select"><?= $num ?></span></a>
+                <?php
+                }
+                }
+                ?>
+
+                <?php
+                if($current_page < $total_page - 3)
+                {
+                $end_page = $total_page;
+
+                ?>
+                <a href="?per_page=<?= $item_per_page ?>&page=<?= $end_page ?>"><span><strong>Last</strong></span></a>
+                <?php
+                }
+                ?>
+            </div>
+
+        </div>
+
+
+
+
+        <!-- To top-->
+        <a rel="external" href="#" class="to-top">
+            <i class="fa fa-arrow-circle-up"></i>
+        </a>
+
+
+    <script src="../JAVASCRIPT/main.js"></script>
+    <script type="text/javascript">
+                // function Cart(id)
+                // {
+                //     $(function()
+                //     {
+                //         $.ajax(
+                //         {
+                //             url: "Cart_Process.php", // gửi ajax lên server
+                //             type: "post", // chọn phương thức gửi là post
+                //             dateType: "text", // dữ liệu trả về dạng text
+                //             data:
+                //             { // Danh sách các thuộc tính sẽ gửi đi
+                //                 id: id,
+                //             },
+                //             success: function (result)
+                //             {
+                //             }
+                //         });
+                //     });
+                // }
+    </script>
+

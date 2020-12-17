@@ -1,0 +1,210 @@
+﻿@using FruitShopSolution.ViewModel.Catalog.Products;
+@{
+    ProductInfoViewModel pro = ViewBag.Data;
+}
+
+<div class="small-container single-product">
+    <div class="row">
+        <div class="col-2">
+            <img src="@pro.ListImages.First().imagepath" id="productimg">
+
+            <div class="small-img-row">
+                @*                <?php
+                    while($row = $IMG->fetch_array())
+                    {
+                    ?>
+                    <div class="small-img-col">
+                        <img src="<?= $row['Lis_Path'] ?>" class="small-img">
+                    </div>
+                    <?php
+                    }
+                    ?>*@
+                @foreach (var i in pro.ListImages)
+                {
+                    <div class="small-img-col">
+                        <img src="@i.imagepath" class="small-img">
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-2">
+            <p>Chi Tiết Sản Phẩm</p>
+            <br>
+            <h1>@pro.pro.Title</h1>
+            <h4>
+                Người dùng đánh giá:
+                <?php
+                Rating_Stars($Product['Pro_Rate']);
+                ?>
+            </h4>
+            <h3>@Convert.ToDecimal(pro.pro.OutputCount).ToString("#,##0") VNĐ</h3>
+
+            <span>Số lượng: </span><input type="number" id="number" value="1" min="1" max="50"> <span>Kg</span>
+            <br>
+            <a href="" class="btn">Yêu thích<i class="fa fa-heart"></i></a>
+            <a class="btn modal-btn" id="addcart">Thêm vào giỏ<i class="fa fa-cart-plus"></i></a>
+            @*<a asp-route="addcart" asp-route-productid="@pro.pro.ProductId" class="btn modal-btn">Đặt hàng<i class="fa fa-cart-plus"></i></a>*@
+            <h3>Thông Tin Sản Phẩm <i class="fa fa-indent"></i></h3>
+            <p class="product-info">
+                @pro.pro.Content
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Title -->
+<div class="small-container">
+    <div class="row row-2">
+        <h2>Sản Phẩm Liên Quan</h2>
+        <a href="#"><p>Xem thêm</p></a>
+    </div>
+</div>
+
+<!-- Sản phẩm liên quan -->
+<div class="small-container relate-product">
+    <div class="row">
+        <?php
+        while ($row = $Relate_product->fetch_array())
+        {
+        ?>
+        <div class="col-4 add-border">
+            <a href="Product_detail.php?id=<?= $row['Pro_ID'] ?>">
+                <img src="<?= $row['Pro_Img'] ?>">
+                <h3><?= $row['Pro_Name'] ?></h3>
+                <div class="rating">
+                    <?php
+                    switch($row['Pro_Rate'])
+                    {
+                    case 1:
+                    {
+                    echo
+                    '
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    ';
+                    break;
+                    }
+                    case 2:
+                    {
+                    echo
+                    '
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    ';
+                    break;
+                    }
+                    case 3:
+                    {
+                    echo
+                    '
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    ';
+                    break;
+                    }
+                    case 4:
+                    {
+                    echo
+                    '
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    ';
+                    break;
+                    }
+                    case 5:
+                    {
+                    echo
+                    '
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    ';
+                    break;
+                    }
+                    }
+                    ?>
+                </div>
+                <p><?= number_format($row['Pro_Price'], 0, ",", ".") ?> VNĐ/1kg</p>
+                <span><a><i class="fa fa-cart-plus"></i></a></span>
+            </a>
+        </div>
+        <?php
+        }
+        ?>
+    </div>
+</div>
+
+
+<!--------- Modal --------->
+<div class="modal-bg">
+    <div class="modal">
+        <span class="modal-close">
+            <a class="btn-close">&times;</a>
+        </span>
+
+        <br> <br>
+        <hr style="background-color: #000000; height: 1px;">
+        <br>
+        <div class="modal-detail">
+            <div class="modal-img">
+                <img src="@pro.ListImages[0].imagepath">
+            </div>
+
+            <div class="modal-info">
+                <h1>@pro.pro.Title</h1>
+                <br>
+                <h3>Người dùng đánh giá: <?= Rating_Stars($Product['Pro_Rate']); ?></h3>
+                <br>
+                <h2>Giá: <?= number_format($Product['Pro_Price'], 0, ",", "."); ?> VNĐ</h2>
+                <br>
+                <h3>Số lượng: <span id="value"></span></h3>
+            </div>
+        </div>
+        <div class="modal-function">
+            <a class="btn" asp-route="#">&#8592; Tiếp tục mua sắm</a>
+            <a class="btn" asp-route="cart">Xem giỏ hàng <i class="fa fa-shopping-cart"></i></a>
+        </div>
+    </div>
+    <!-- To top-->
+    <a rel="external" href="#" class="to-top">
+        <i class="fa fa-arrow-circle-up"></i>
+    </a>
+</div> <!-- end div backgroundcolor -->
+
+
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#addcart").click(function () {
+            $.ajax(
+                {
+                    url: "@Url.RouteUrl("addcart")", // gửi ajax đến file
+                    type: "post", // chọn phương thức gửi là get
+                    dateType: "text", // dữ liệu trả về dạng text
+                    data:
+                    {
+                        productid: @pro.pro.ProductId,
+                        quantity: $("#number").val()
+                    },
+                    success: function (result) {
+                        $("#value").text($("#number").val());
+                        $("#numbercart").text(result);
+                    }
+                });
+        });
+    });
+</script>

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="MimeKit" Version="2.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FruitShopSolution.Aplication\FruitShopSolution.Application.csproj" />
+    <ProjectReference Include="..\FruitShopSolution.Data\FruitShopSolution.Data.csproj" />
+    <ProjectReference Include="..\FruitShopSolution.ViewModel\FruitShopSolution.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Image\Products\" />
+  </ItemGroup>
+
+</Project>

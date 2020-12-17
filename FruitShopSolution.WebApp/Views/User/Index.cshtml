@@ -1,0 +1,102 @@
+﻿
+
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@model List<UserViewModel>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách tài khoản</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách tài khoản</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    @*<a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>*@
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="" name="keyword" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" class="form-control">
+                                    <option>--Chọn danh mục--</option>
+                                </select>
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/User/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Mã KH
+                            </th>
+                            <th>
+                                Tên
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                SĐT
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FristName) @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+ 
+                                <td>
+@*                                    @Html.ActionLink("Sửa", "Update", new { id = item.ProductId }) |*@
+                                        @Html.ActionLink("Xem", "ViewDetails", new { id = item.UserId })
+@*                                    @Html.ActionLink("Xóa", "Delete", "Product", new { id = item.ProductId }) |*@
+                                    @* @Html.ActionLink("Gán danh mục", "CategoryAssign", new { id = item.Id }) |*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

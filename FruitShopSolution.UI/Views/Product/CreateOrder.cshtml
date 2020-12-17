@@ -1,0 +1,22 @@
+﻿@model  FruitShopSolution.ViewModel.Catalog.Order.CreateOrderRequest;
+@{
+    ViewData["Title"] = "ViewOrder";
+}
+
+<h1>Thông tin order</h1>
+<p>
+    @Model.ShipName
+    @Model.ShipEmail
+    @Model.ShipAddress
+    @Model.ShipPhoneNumber
+    @Model.OrderDate
+</p>
+    @{ 
+        foreach(var i in Model.ListProduct)
+        {
+            <p>@i.ProductId</p>
+        }
+    }
+
+
+

@@ -1,0 +1,314 @@
+﻿@using FruitShopSolution.ViewModel.Catalog.Products;
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-2">
+        <h3>
+            Trái cây sạch - TNT FRUIT mang đến cho bạn<br>
+            những loại trái cây ngon, sạch và chất lượng nhất Việt Nam!
+        </h3>
+        <a href="#Featured" class="btn"><span></span>Mua sắm nào &#8594;</a>
+    </div>
+    <div class="col-2">
+        <img src="/Image/Ảnh bìa/Traicay.png">
+    </div>
+</div>
+
+<!------ Featured categories ------>
+<div class="categories">
+    <div class="row">
+        <div class="col-3">
+            <a href="#"><img src="/Image/Ảnh bìa/Traicay_1.jpg"></a>
+        </div>
+    </div>
+</div>
+
+<!------ Featured products ------>
+<div class="small-container">
+    <h1 id="Featured" class="title">Trái Cây Nội</h1>
+    <div class="row">
+        <!--<?php
+        while ($row = $Product->fetch_array())
+        {
+        ?>
+        <div class="col-4 add-border">
+            <a href="Product_detail.php?id=<?= $row['Pro_ID'] ?>">
+                <img src="<?= $row['Pro_Img'] ?>">
+                <h3><?= $row['Pro_Name'] ?></h3>
+                <div class="rating">
+                    <?php
+                    Rating_Stars($row['Pro_Rate']);
+                    ?>
+                </div>
+                <p><?= number_format($row['Pro_Price'], 0, ",", ".") ?> VNĐ/1kg</p>-->
+        <!-- <span><a href="?ID=<?= $row['Pro_ID'] ?>"><i class="fa fa-cart-plus"></i></a></span>                                      -->
+        <!--</a>
+        </div>
+        <?php
+        }
+        ?>-->
+        @{
+            string url = "https://localhost:5001/Product/ViewDetail?";
+        
+            foreach (ProductInfoViewModel i in ViewBag.Product)
+            {
+                // List<ProductImageViewModel> listImages =await Model.GetProductImages(i.ProductId);
+
+                <div class="col-4 add-border">
+                    @{
+                        string link =url + $"proId={i.pro.ProductId}";
+                    }
+                    <a href="@link">
+                        @if (i.ListImages.Count() > 0)
+                        {
+                            ;
+                            <img src="@i.ListImages[0].imagepath">
+                        }
+                        <h3>@i.pro.Title</h3>
+                        <div class="rating">
+                        </div>
+                        <p>@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/1kg</p>
+                </div>
+            }
+        }
+    </div>
+</div>
+<div class="offer">
+    <div class="row">
+        <div class="col-2">
+            <img src="../Image/Products/Sầu riêng/Sầu riêng.png" class="offer-img">
+        </div>
+        <div class="col-2">
+            <p>Chỉ có tại <strong>Trái Cây Sạch - TNT FRUIT</strong></p>
+            <p><strike>90,000 VNĐ / 1kg</strike><strong class="Price-Durian">&nbsp; &nbsp; 50,000 VNĐ / 1kg</strong></p>
+            <h2>Sầu Riêng Musang King</h2>
+            <small>
+                Giống sầu riêng Musang King (Musang King Durian) là giống sầu riêng có xuất xứ từ Malaysia, <br>
+                được mệnh danh là vua của các loại sầu riêng.
+                Là loại sầu riêng nổi tiếng khắp thế giới vì độ ngon và chất lượng đến từ Malaysia.
+
+            </small>
+            <br>
+            <a href="#" class="btn"><span></span>Thêm vào giỏ hàng <i class="fa fa-cart-plus add-cart"></i></a>
+        </div>
+    </div>
+</div>
+
+<!------ Testimonial ------>
+<div class="testimonial">
+    <div class="row">
+        <!-- Lê Thị Tiểu Linh -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/ri.bi.566/" target="_blank">
+                <img src="../Image/Rating/Lê Thị Tiểu Linh/Linh_2.jpg">
+            </a>
+            <h3>Lê Thị Tiểu Linh</h3>
+        </div>
+
+        <!-- Phan Thị Phương Thảo -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/nun.khum" target="_blank">
+                <img src="../Image/Rating/Phan Thị Phương Thảo/Thảo_1.jpg">
+            </a>
+            <h3>Phan Thị Phương Thảo</h3>
+        </div>
+
+        <!-- Nguyễn Thị Hồng Thủy -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/profile.php?id=100007495536117" target="_blank">
+                <img src="../Image/Rating/Nguyễn Thị Hồng Thủy/Thủy_2.jpg">
+            </a>
+            <h3>Nguyễn Thị Hồng Thủy</h3>
+        </div>
+
+        <!-- Đinh Thị Hoàng Lan -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/profile.php?id=100005552327668" target="_blank">
+                <img src="../Image/Rating/Đinh Thị Hoàng Lan/Lan_1.jpg">
+            </a>
+            <h3>Đinh Thị Hoàng Lan</h3>
+        </div>
+
+        <!-- Vũ Tiến Giáp -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/jab.tinjab/" target="_blank">
+                <img src="../Image/Rating/Vũ Tiến Giáp/Giáp_1.jpg">
+            </a>
+            <h3>Vũ Tiến Giáp</h3>
+        </div>
+
+        <!-- Nguyễn Việt Hoàng -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/profile.php?id=100042440866178" target="_blank">
+                <img src="../Image/Rating/Nguyễn Việt Hoàng/Hoàng_1.jpg">
+            </a>
+            <h3>Nguyễn Việt Hoàng</h3>
+        </div>
+
+        <!-- Thắng đẹp trai -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+                Thang dep lam Thang dep lam
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/ThangUIT2018/" target="_blank">
+                <img src="../Image/Rating/Me/Thắng_1.jpg">
+            </a>
+            <h3>Chu Nam Thắng</h3>
+        </div>
+
+        <!-- Vũ Hồng Đức -->
+        <div class="col-4">
+            <i class="fa fa-quote-left"></i>
+            <p>
+                TNT FRUIT chính là sự lựa chọn của tôi,
+                những sản phẩm trái cây ở đây đều rất sạch và tươi ngon. Nhiều sản phẩm
+                đa dạng và hơn hết là giá cả rất hợp lí. Tôi sẽ tiếp tục ủng hộ thuơng hiệu này!<br>
+                (26/10/2020)
+            </p>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+            <a href="https://www.facebook.com/profile.php?id=100006372077938" target="_blank">
+                <img src="../Image/Rating/Vũ Hồng Đức/Đức_1.jpg">
+            </a>
+            <h3>Vũ Hồng Đức</h3>
+        </div>
+    </div>
+</div>
+
+<!------ Brands ------>
+<div class="brands">
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <a href="https://napas.com.vn/" target="_blank"><img src="../Image/Brand/logo-napas.png"></a>
+            </div>
+
+            <div class="col-5">
+                <a href="https://www.mastercard.us/en-us.html" target="_blank">
+                    <img src="../Image/Brand/logo-mastercard.png">
+                </a>
+            </div>
+
+            <div class="col-5">
+                <a href="https://www.visa.com.vn/vi_VN" target="_blank">
+                    <img src="../Image/Brand/logo-visa.png">
+                </a>
+            </div>
+
+            <div class="col-5">
+                <a href="https://momo.vn/" target="_blank"><img src="../Image/Brand/logo-momo.png"></a>
+            </div>
+
+            <div class="col-5">
+                <a href="https://zalopay.vn/" target="_blank"><img src="../Image/Brand/logo-zalopay.png"></a>
+            </div>
+        </div>
+    </div>
+</div>

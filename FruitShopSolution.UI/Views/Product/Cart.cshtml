@@ -1,0 +1,96 @@
+﻿@model List<FruitShopSolution.ViewModel.Catalog.Cart.CartViewModel>
+<h2>GIỎ HÀNG</h2>
+
+@if (Model.Count > 0)
+{
+    decimal total = 0;
+    int stt = 1;
+
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th></th>
+        </tr>
+        @foreach (var cartitem in Model)
+        {
+            var thanhtien = cartitem.Quantity * cartitem.Products.pro.OutputCount;
+            total += thanhtien;
+
+            <tr>
+                <td>@(stt++)</td>
+                <td>@cartitem.Products.pro.Title</td>
+                <td>@(cartitem.Products.pro.OutputCount.ToString("n0"))</td>
+                <td><input asp-for="@cartitem.Quantity" id="@($"quantity-{cartitem.Products.pro.ProductId}")" /></td>
+                <td>@(thanhtien.ToString("n0"))</td>
+                <td>
+                    <button class="btn btn-success updatecartitem"
+                            data-productid="@cartitem.Products.pro.ProductId">
+                        Cập nhật
+                    </button>
+                    <a asp-route="removecart" asp-route-productid="@cartitem.Products.pro.ProductId"
+                       class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4" class="text-right">Tổng tiền</td>
+            <td>@(total.ToString("n0"))</td>
+            <td></td>
+        </tr>
+    </table>
+
+    <a asp-controller="Product" asp-action="Checkout" class="btn btn-success">Gửi đơn hàng</a>
+
+    @section Scripts {
+        <script>
+            @*$(document).click(function () {
+              $(".updatecartitem").click(function (event) {
+                  event.preventDefault();
+                  var productid = $(this).attr("data-productid");
+                  var quantity = $("#quantity-" + productid).val();
+                  $.ajax({
+                      type: "POST",
+                      url:"@Url.RouteUrl("updatecart")",
+                      data: {
+                          productid: productid,
+                          quantity:quantity
+                      },
+                      success: function (result) {
+                          window.location.href = "@Url.RouteUrl("cart")";
+                      }
+                  });
+              });
+          });*@
+
+            function Updatecart(id) {
+                // alert(id);
+                var productid = $(this).attr("data-productid");
+                var quantity = $("#quantity-" + productid).val();
+                $.ajax(
+                    {
+                        url: "@Url.RouteUrl("updatecart")", // gửi ajax lên server
+                        type: "post", // chọn phương thức gửi là post
+                        dateType: "text", // dữ liệu trả về dạng text
+                        data:
+                        {
+                            productid: productid,
+                            quantity: quantity
+                        },
+                        success: function (result) {
+                            $("#listcart").load("Cart.php #listcart");
+                        }
+                    });
+            }
+        </script>
+    }
+
+}
+else
+{
+    <p class="alert alert-danger">Giỏ hàng trống</p>
+}
+
