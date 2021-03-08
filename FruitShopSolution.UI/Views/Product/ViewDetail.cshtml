@@ -1,24 +1,40 @@
 ﻿@using FruitShopSolution.ViewModel.Catalog.Products;
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@using System.Web;
 @{
     ProductInfoViewModel pro = ViewBag.Data;
+    List<ProductInfoViewModel> relatedProduct = ViewBag.Related;
+    List<CommentViewModel> comments;
+    UserViewModel user;
+    string text = "";
+    if (ViewBag.Comment != null)
+    {
+        comments = ViewBag.Comment;
+    }
+    else
+    {
+        comments = new List<CommentViewModel>();
+    }
+    if (ViewBag.User != null)
+    {
+        user = ViewBag.User;
+    }
+    else
+    {
+        user = new UserViewModel();
+    }
 }
-
+@{
+    ViewData["Title"] = "Thông tin sản phẩm";
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
 <div class="small-container single-product">
     <div class="row">
         <div class="col-2">
             <img src="@pro.ListImages.First().imagepath" id="productimg">
 
             <div class="small-img-row">
-                @*                <?php
-                    while($row = $IMG->fetch_array())
-                    {
-                    ?>
-                    <div class="small-img-col">
-                        <img src="<?= $row['Lis_Path'] ?>" class="small-img">
-                    </div>
-                    <?php
-                    }
-                    ?>*@
                 @foreach (var i in pro.ListImages)
                 {
                     <div class="small-img-col">
@@ -28,20 +44,29 @@
             </div>
         </div>
         <div class="col-2">
-            <p>Chi Tiết Sản Phẩm</p>
-            <br>
             <h1>@pro.pro.Title</h1>
+            <p><i class="fa fa-eye"></i> 30</p>
             <h4>
                 Người dùng đánh giá:
-                <?php
-                Rating_Stars($Product['Pro_Rate']);
-                ?>
+                @Rating_Stars(1)
             </h4>
-            <h3>@Convert.ToDecimal(pro.pro.OutputCount).ToString("#,##0") VNĐ</h3>
+            <h4>Xuất xứ: @pro.pro.Origin</h4>
+            @*            <h3>@Convert.ToDecimal(pro.pro.OutputCount).ToString("#,##0") VNĐ</h3>*@
+            @{
+                if (pro.Discount != 100 && pro.Discount != 0)
+                {
+                    <h3 style="text-decoration: line-through;">@Convert.ToDecimal(pro.pro.OutputCount).ToString("#,##0") VNĐ/@pro.pro.Unit</h3>
+                    <h3>@Convert.ToDecimal(pro.pro.OutputCount *(1 - (decimal)pro.Discount / 100)).ToString("#,##0") VNĐ/@pro.pro.Unit</h3>
+                }
+                else
+                {
+                    <h3>@Convert.ToDecimal(pro.pro.OutputCount).ToString("#,##0") VNĐ/@pro.pro.Unit</h3>
+                }
+            }
 
-            <span>Số lượng: </span><input type="number" id="number" value="1" min="1" max="50"> <span>Kg</span>
+            <span>Số lượng: </span><input type="number" id="number" class="number" value="1" min="1" max="50"> <span>Kg</span>
             <br>
-            <a href="" class="btn">Yêu thích<i class="fa fa-heart"></i></a>
+            <a onclick="AddToLove(@pro.pro.ProductId)" class="btn">Yêu thích<i class="fa fa-heart"></i></a>
             <a class="btn modal-btn" id="addcart">Thêm vào giỏ<i class="fa fa-cart-plus"></i></a>
             @*<a asp-route="addcart" asp-route-productid="@pro.pro.ProductId" class="btn modal-btn">Đặt hàng<i class="fa fa-cart-plus"></i></a>*@
             <h3>Thông Tin Sản Phẩm <i class="fa fa-indent"></i></h3>
@@ -50,104 +75,185 @@
             </p>
         </div>
     </div>
-</div>
 
+
+    <hr style="border: none; background-color: var(--Background_color); border-radius: 3px; padding: 2px; height: 1px; margin: 100px 0 50px 0;">
+
+    <h1 class="title-comment">
+        <i class="fa fa-comments"></i> &nbsp;&nbsp;BÌNH LUẬN, ĐÁNH GIÁ SẢN PHẨM <i class="fa fa-comments"></i>
+    </h1>
+
+    <div class="comment">
+        <div class="comment-box">
+            @{
+                if (user.UserName == null)
+                {
+                    <h2 style="letter-spacing: 2px;">Đăng nhập để có thể bình luận và nhận thông tin khuyến mãi <a href="@Url.Action("Login", "User")" style="color: red;"> TẠI ĐÂY</a></h2> <br>
+                }
+                else
+                {
+                    <textarea name="acontent" class="content" id="content" cols="30" rows="10" style="width: 1102px;"></textarea>
+                    <br>
+                    <a class="btn" onclick="Comment(@pro.pro.ProductId)">Đăng</a>
+                    <p style="color: red" id="notify"></p>
+
+                    <hr style="width: 1100px; margin-bottom: 80px;">
+                }
+            }
+
+            <div id="commentload">
+
+                @{
+                    if (comments.Count() == 0)
+                    {
+                        <h3>Chưa có bình luận nào.</h3>
+                    }
+                    else
+                    {
+                        <div class="list-comment">
+                            @{
+                                foreach (var item in comments)
+                                {
+                                    string name = item.User.FristName + item.User.LastName;
+                                    <div class="user">
+                                        <image src="/Logo/User.png" class="user-img">
+                                            <div class="username">&nbsp; @name</div>
+                                            <br>
+                                            <div class="time">&nbsp; Nhận xét vào: @item.Time_Comment</div>
+                                            <div class="clear"></div>
+                                            <br>
+                                            <div class="content-comment">
+                                                @item.Text
+                                            </div>
+                                            <hr>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+
+        <hr style="width: 100%; border: none; background-color: var(--Background_color); border-radius: 3px; padding: 2px; height: 1px; margin: 100px 0;">
+    </div>
+</div>
 <!-- Title -->
 <div class="small-container">
     <div class="row row-2">
         <h2>Sản Phẩm Liên Quan</h2>
-        <a href="#"><p>Xem thêm</p></a>
+        <a href="@Url.Action("ViewAll")"><p>Xem thêm</p></a>
     </div>
 </div>
 
 <!-- Sản phẩm liên quan -->
 <div class="small-container relate-product">
     <div class="row">
-        <?php
-        while ($row = $Relate_product->fetch_array())
-        {
-        ?>
-        <div class="col-4 add-border">
-            <a href="Product_detail.php?id=<?= $row['Pro_ID'] ?>">
-                <img src="<?= $row['Pro_Img'] ?>">
-                <h3><?= $row['Pro_Name'] ?></h3>
-                <div class="rating">
-                    <?php
-                    switch($row['Pro_Rate'])
-                    {
-                    case 1:
-                    {
-                    echo
-                    '
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    ';
-                    break;
-                    }
-                    case 2:
-                    {
-                    echo
-                    '
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    ';
-                    break;
-                    }
-                    case 3:
-                    {
-                    echo
-                    '
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    ';
-                    break;
-                    }
-                    case 4:
-                    {
-                    echo
-                    '
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                    ';
-                    break;
-                    }
-                    case 5:
-                    {
-                    echo
-                    '
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    ';
-                    break;
-                    }
-                    }
-                    ?>
+        @{
+            int count_1 = 0;
+            foreach (var item in relatedProduct)
+            {
+                count++;
+                if (count_1 >= 5) break;
+                <div class="col-4 add-border">
+                    <a href="/Product/ViewDetail?proId=@item.pro.ProductId">
+                        <img src="@item.ListImages.FirstOrDefault().imagepath">
+                        <h3>@item.pro.Title</h3>
+                        <div class="rating">
+                            @Rating_Stars(6)
+                        </div>
+                        @{
+                            if (item.Discount != 100 && item.Discount != 0)
+                            {
+                                <p style="text-decoration: line-through;">@Convert.ToDecimal(item.pro.OutputCount).ToString("#,##0") VNĐ/@pro.pro.Unit</p>
+                                <p>@Convert.ToDecimal(item.pro.OutputCount * (1-(decimal)item.Discount / 100)).ToString("#,##0") VNĐ/@pro.pro.Unit</p>
+                            }
+                            else
+                            {
+                                <p>@Convert.ToDecimal(item.pro.OutputCount).ToString("#,##0") VNĐ/@pro.pro.Unit</p>
+                            }
+                        }
+                        <!-- <span><a><i class="fa fa-cart-plus"></i></a></span>                                      -->
+                    </a>
                 </div>
-                <p><?= number_format($row['Pro_Price'], 0, ",", ".") ?> VNĐ/1kg</p>
-                <span><a><i class="fa fa-cart-plus"></i></a></span>
-            </a>
-        </div>
-        <?php
+            }
         }
-        ?>
     </div>
 </div>
+<!--------Funtions-->
+@{
+    string Rating_Stars(int rate)
+    {
+        string str = "";
+        switch (rate)
+        {
+            case 1:
+                {
 
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 2:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 3:
+                {
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 4:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+
+                    break;
+                }
+            case 5:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    break;
+                }
+            default:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    break;
+                }
+
+        }
+        return str;
+    }
+
+}
 
 <!--------- Modal --------->
 <div class="modal-bg">
@@ -155,7 +261,6 @@
         <span class="modal-close">
             <a class="btn-close">&times;</a>
         </span>
-
         <br> <br>
         <hr style="background-color: #000000; height: 1px;">
         <br>
@@ -167,9 +272,18 @@
             <div class="modal-info">
                 <h1>@pro.pro.Title</h1>
                 <br>
-                <h3>Người dùng đánh giá: <?= Rating_Stars($Product['Pro_Rate']); ?></h3>
+                <h3>Người dùng đánh giá: @Rating_Stars(5)</h3>
                 <br>
-                <h2>Giá: <?= number_format($Product['Pro_Price'], 0, ",", "."); ?> VNĐ</h2>
+                @{
+                    if (pro.Discount != 100 && pro.Discount != 0)
+                    {
+                        <h2>Giá: @Convert.ToDecimal(pro.pro.OutputCount * (1-(decimal)pro.Discount / 100)).ToString("#,##0") VNĐ</h2>
+                    }
+                    else
+                    {
+                        <h2>Giá: @Convert.ToDecimal(pro.pro.OutputCount).ToString("#,##0") VNĐ</h2>
+                    }
+                }
                 <br>
                 <h3>Số lượng: <span id="value"></span></h3>
             </div>
@@ -197,8 +311,8 @@
                     dateType: "text", // dữ liệu trả về dạng text
                     data:
                     {
-                        productid: @pro.pro.ProductId,
-                        quantity: $("#number").val()
+                        'productid': @pro.pro.ProductId,
+                        'quantity': $("#number").val()
                     },
                     success: function (result) {
                         $("#value").text($("#number").val());
@@ -207,4 +321,41 @@
                 });
         });
     });
+    function Comment(id) {
+        var str = $("#content").val();
+        var pro = id;
+        var date = new Date().toLocaleString();
+        console.log(date);
+        $.ajax
+            ({
+                url: '@Url.Action("Comment")', // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là get
+                data:
+                {
+                    'proId': pro,
+                    'text': $("#content").val(),
+                    'date':date
+                },
+                success: function (result) {
+                    console.log('ok');
+                    $("#commentload").load("/Product/ViewDetail?proId=@pro.pro.ProductId #commentload");
+                    $("#notify").text(result);
+                }
+            });
+    };
+
+    function AddToLove(id) {
+        $.ajax
+            ({
+                url: '@Url.ActionLink("AddToLove")', // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là get
+                data:
+                {
+                    productid:id
+                },
+                success: function (result) {
+                    console.log('ok');
+                }
+            });
+    };
 </script>

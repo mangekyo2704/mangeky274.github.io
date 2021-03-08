@@ -25,12 +25,41 @@
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+
+                        <label asp-for="categoryId" class="control-label">Danh Mục</label>
+                        <style>
+                            button.ms-choice {
+                                height: 37px;
+                            }
+
+                                button.ms-choice span {
+                                    margin-top: 5px;
+                                }
+                        </style>
+
+                        @Html.ListBox("selectedCategories", ViewBag.Categories, new { @class = "w-100", id = "selectedCategories" })
+                        <!--<select name="categoryId"  asp-for="categoryId" class="form-control" asp-items="ViewBag.Categories" >
+            <option>--Chọn danh mục--</option>
+        </select>-->
+
+                        <span asp-validation-for="categoryId" class="text-danger"></span>
+                    </div>
+@*                    <div class="form-group">
+                        <style>
+                            input#Unit 
+                            {
+                                width: 20px;
+                            }
+                        </style>
+                        <div class="container_swap">
+                            <label asp-for="Unit" class="control-label">Xuất xứ</label>
+                            <input asp-for="Unit" class="form-control" type="checkbox" value="Trái" checked />Trái<br />
+                            <input asp-for="Unit" class="form-control" type="ch" value="Ký" /><label style="display:inline">Ký</label>
+                        </div>
+                        <span asp-validation-for="Origin" class="text-danger"></span>
+                    </div>*@
+                    <div class="form-group">
                         <label asp-for="Origin" class="control-label">Xuất xứ</label>
-@*                        <select name="categoryId"  class="form-control" asp-for="Origin">
-                            <option>--Chọn danh mục--</option>
-                            <option>Xuất xứ mĩ</option>
-                            <option>Việt Nam</option>
-                        </select>*@
                         <input asp-for="Origin" class="form-control" />
                         <span asp-validation-for="Origin" class="text-danger"></span>
                     </div>
@@ -55,8 +84,8 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>*@
                     <div class="form-group">
-                        <label asp-for="Content" class="control-label">Chọn ảnh</label>
-                        <textarea id="txt_details" asp-for="Content" rows="35" class="form-control"></textarea>
+                        <label asp-for="Content" class="control-label">Chi tiết</label>
+                        <textarea id="txt_details" asp-for="Content" rows="20" class="form-control"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
                     @*                    <div class="form-group">
@@ -74,16 +103,43 @@
             <input asp-for="SeoAlias" class="form-control" />
             <span asp-validation-for="SeoAlias" class="text-danger"></span>
         </div>*@
-                <div class="form-group">
-                    <label asp-for="ThumnailImage" class="control-label"></label>
-                    <input asp-for="ThumnailImage" type="file" multiple="multiple" class="form-control" />
-                    <span asp-validation-for="ThumnailImage" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Tạo mới" class="btn btn-primary" />
-                </div>
+                    <div class="form-group">
+                        <label asp-for="ThumnailImage" class="control-label">Ảnh</label>
+                        <input asp-for="ThumnailImage" type="file" multiple="multiple" class="form-control" />
+                        <span asp-validation-for="ThumnailImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+@{ }
+
+@section Scripts
+{
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+    <script>
+        $('#selectedCategories').multipleSelect({
+            selectAll: false,
+            keepOpen: false,
+            isOpen: false
+        });
+
+        function Validate() {
+            console.log("da vao vaildation")
+            var check = 1;
+            if ($('#Title').val() == "") {
+                $('span#titlemsg').text("Tên không được để trống!")
+                check = 0;
+            }
+            console.log(check);
+            return check;
+        };
+    </script>
+
+}
+

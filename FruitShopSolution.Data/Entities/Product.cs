@@ -13,6 +13,7 @@ namespace FruitShopSolution.Data.Entities
         public decimal OutputCount { get; set; }
         public int Quantity { get; set; }
         public string Content { get; set; }
+        public string Unit { get; set; }
         public DateTime DateCreated { get; set; }
         public List<ProductImage> ProductImages { get; set; }
         public List<ProductInCategory> ProductInCategories { get; set; }

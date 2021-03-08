@@ -1,6 +1,9 @@
 ﻿@model FruitShopSolution.ViewModel.Catalog.Products.ProductUpdateRequest
+@using FruitShopSolution.ViewModel.Catalog.Products;
 
 @{
+    ProductViewModel product = ViewBag.Product;
+    List<ProductImageViewModel> imgaes = ViewBag.Image;
     ViewData["Title"] = "Cập nhật sản phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -17,50 +20,41 @@
 
         <div class="card-body">
             <div class="col-md-8">
-                <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                <form asp-action="Update" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="ProductId" />
+                    <input type="hidden" asp-for="ProductId" value="@product.ProductId" />
                     <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" />
+                        <label asp-for="Title" class="control-label">Tên sản phẩm</label>
+                        <input asp-for="Title" class="form-control" value="@product.Title" required />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Origin" class="control-label"></label>
-                        <input asp-for="Origin" class="form-control" />
+                        <label asp-for="Origin" class="control-label">Xuất xứ</label>
+                        <input asp-for="Origin" class="form-control" value="@product.Origin" required />
                         <span asp-validation-for="Origin" class="text-danger"></span>
                     </div>
-@*
+                    @*
+        <div class="form-group">
+            <label asp-for="Content" class="control-label"></label>
+            <textarea asp-for="Content" rows="5" class="form-control"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>*@
                     <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
-                        <textarea asp-for="Content" rows="5" class="form-control"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>*@
-                    <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
-                        <textarea id="txt_details" asp-for="Content" rows="35" class="form-control"></textarea>
+                        <label asp-for="Content" class="control-label">Mô tả</label>
+                        @*<textarea id="txt_details" asp-for="Content" rows="35" class="form-control"></textarea>*@
+                        <textarea id="Content" name="Content" rows="35" class="form-control" required>@product.Content</textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
-@*                    <div class="form-group">
-                        <label asp-for="SeoDescription" class="control-label"></label>
-                        <input asp-for="SeoDescription" class="form-control" />
-                        <span asp-validation-for="SeoDescription" class="text-danger"></span>
-                    </div>*@
-@*                    <div class="form-group">
-                        <label asp-for="SeoTitle" class="control-label"></label>
-                        <input asp-for="SeoTitle" class="form-control" />
-                        <span asp-validation-for="SeoTitle" class="text-danger"></span>
-                    </div>*@
-@*                    <div class="form-group">
-                        <label asp-for="SeoAlias" class="control-label"></label>
-                        <input asp-for="SeoAlias" class="form-control" />
-                        <span asp-validation-for="SeoAlias" class="text-danger"></span>
-                    </div>*@
-@*                    <div class="form-group">
-                        <label asp-for="thu" class="control-label"></label>
-                        <input asp-for="ThumbnailImage" type="file" class="form-control" />
-                        <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
-                    </div>*@
+                    <div class="form-group">
+                        <label asp-for="OutputCount" class="control-label">Giá bán</label>
+                        <input asp-for="OutputCount" class="form-control" type="number" value="@product.OutputCount" required />
+                        <span asp-validation-for="OutputCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Quantity" class="control-label">Tồn kho</label>
+                        <input asp-for="Quantity" class="form-control" type="number" value="@product.Quantity" required />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
                     <div class="form-group">
                         <input type="submit" value="Cập nhật" class="btn btn-primary" />
                     </div>

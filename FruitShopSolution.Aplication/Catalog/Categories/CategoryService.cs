@@ -17,7 +17,10 @@ namespace FruitShopSolution.Application.Catalog.Categories
         {
             _context = context;
         }
-
+        public int GetCategoryId(string name)
+        {
+            return _context.Categories.Where(x => x.Title.Contains(name)).FirstOrDefault().CategoryId;
+        }
         public List<CategoriesViewModel> GetAll()
         {
             var listData = new List<CategoriesViewModel>();

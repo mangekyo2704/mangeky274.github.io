@@ -16,7 +16,7 @@ namespace FruitShopSolution.Application.Common
         {
             _userContentFolder = Path.Combine(webHostEnvironment.WebRootPath, USER_CONTENT_FOLDER_NAME);
             Console.WriteLine("1"+_userContentFolder);
-            _userContentFolder2 = Path.Combine("C:\\Users\\vnngu\\source\\repos\\Db\\FruitShopSolution.UI\\wwwroot\\Image\\Products");
+            _userContentFolder2 = Path.Combine("C:\\Users\\vnngu\\Source\\Repos\\mangeky274.github.io\\FruitShopSolution.UI\\wwwroot\\Image\\Products");
             Console.WriteLine("2" +_userContentFolder2);
         }
         public async Task DeleteFileAsync(string fileName)
@@ -39,11 +39,12 @@ namespace FruitShopSolution.Application.Common
         public async Task SaveFileAsync(Stream mediaBinaryStream, string fileName)
         {
             var filePath = Path.Combine(_userContentFolder, fileName);
+            var filePath2 = Path.Combine(_userContentFolder2, fileName);
             using var output = new FileStream(filePath, FileMode.Create);
              mediaBinaryStream.CopyTo(output);
             string url = _userContentFolder + "/" + fileName;
             string url2 = _userContentFolder2 + "/" + fileName;
-            File.Copy(url, url2); 
+            File.Copy(filePath, filePath2, true);
         }
     }
 }

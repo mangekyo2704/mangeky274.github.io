@@ -1,10 +1,13 @@
 ﻿
 
 @using FruitShopSolution.ViewModel.Catalog.Products;
+@using FruitShopSolution.ViewModel.Catalog.Categories;
+@using FruitShopSolution.ViewModel.Common;
 @model List<ProductViewModel>;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<CategoriesViewModel> categories = ViewBag.Categories2;
 }
 
 <div class="container-fluid">
@@ -36,6 +39,27 @@
                             </div>
                         </div>
                     </form>
+
+                        @*<div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="" id="keyword1" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <select id="category" onchange="LoadProduct()" class="form-control">
+                                    <option>--Chọn danh mục--</option>
+                                    @{
+                                        foreach (var i in categories)
+                                        {
+                                            <option value="@i.CategoryId">@i.Title</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>*@
                 </div>
             </div>
         </div>
@@ -114,6 +138,58 @@
                 </table>
             </div>
         </div>
+        
+        @{ 
+            Func<int?, string> generateUrl = (int? _pagenumber) =>
+            {
+                if (_pagenumber == null) _pagenumber = 1;
+                return Url.Action("Index", new { pageIndex = _pagenumber,  pageSize = 5 });
+            };
+            PageModel page = ViewBag.Page;
+            if(page.PageIndex == 0)
+            {
+                page.PageIndex = 1;
+                page.TotalPage = 4;
+            }
+            var datapaging = new
+            {
+                currentPage = page.PageIndex,    // trang hiện tại
+                countPages = page.TotalPage,   // tổng  số trang 
+                generateUrl = generateUrl
+            };
+        }
+
+        <div class="paging">
+            <style>
+                .pagination {
+                    padding-left: 1240px;
+                    margin: auto;
+                }
+            </style>
+            <partial name="_Paging" model="@datapaging" />
+        </div>
+        
     </div>
 </div>
+    <script type="text/javascript">
+            function LoadProduct() {
+                 
+                var keyword = $("#keyword1").val();
+                var categoryid = $("#category").val();
+                $.ajax(
+                    {
+                        url: "@Url.Action("GetProduct")", // gửi ajax lên server
+                        type: "post", // chọn phương thức gửi là post
+                        data:
+                        {
+                            'searchString': keyword,
+                            'category': categoryid
+                        },
+                        success: function (result) {
+                            //$("#card-body").load("@Url.Action("Index") #card-body");
+                            alert("ok");
+                        }
+                    });
+    }
+    </script>
 

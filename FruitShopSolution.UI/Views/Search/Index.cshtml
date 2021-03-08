@@ -1,18 +1,25 @@
 ﻿      <!------ All products ------>
-@model List<FruitShopSolution.ViewModel.Catalog.Products.ProductInfoViewModel>;
-@{ 
+@using FruitShopSolution.ViewModel.Catalog.Products;
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<ProductInfoViewModel> Products = new List<ProductInfoViewModel>(); ;
+    if (ViewBag.Products != null)
+    {
+        Products = ViewBag.Products;
+    }
 }
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+    UserViewModel user = ViewBag.User;
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
 <div class="small-container">
 
     <div class="row row-2">
         <h1>Tìm Kiếm @ViewBag.Keyword</h1>
-        @{ 
-            if(Model.Count() <= 0)
-            {
-                <p>Không có kết quả</p>
-            }
-        }
+
         <select name="Sort">
             <option selected>Sắp xếp theo giá</option>
             <option>Sắp xếp theo giá</option>
@@ -20,18 +27,24 @@
             <option>Sắp xếp theo giá</option>
             <option>Sắp xếp theo giá</option>
         </select>
-        <?php
-        }
-        ?>
     </div>
 
 
     <!------ Hiển thị toàn bộ sản phẩm ------>
     <div class="row">
         @{
+            <div id="searchnull">
+                @{
+                    if (Products.Count() <= 0)
+                    {
+                        <img src="/Image/Null.png">
+                        <h4 style=" margin-left: 47px; font-size: 22px; ">Không có kết quả</h4>
+                    }
+                }
+            </div>
             string url = "https://localhost:5001/ProductDetail/ViewDetail?";
 
-            foreach (var i in Model)
+            foreach (var i in Products)
             {
                 // List<ProductImageViewModel> listImages =await Model.GetProductImages(i.ProductId);
 
@@ -42,76 +55,95 @@
                     <a href="@link">
                         @if (i.ListImages.Count() > 0)
                         {
-                            ;
                             <img src="@i.ListImages[0].imagepath">
                         }
                         <h3>@i.pro.Title</h3>
                         <div class="rating">
+                            @Rating_Stars(5)
                         </div>
                         <p>@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/1kg</p>
+                    </a>
                 </div>
             }
         }
     </div>
 </div>
 <div>
-    <?php
-    if($total_page <= 1)
-    {
-    // Nếu sản phẩm chỉ có trên 1 trang thì không cần hiển thị phân trang
-    }
-    else // Nếu sản phẩm nhiều hơn 1 trang thì hiển thị phân trang
-    {
-    ?>
-    <!------ Phân trang ------>
-    <div class="page-btn">
-        <?php
-        if($current_page > 3)
-        {
-        $first_page = 1;
 
-        ?>
-        <a href="?<?= $param ?>per_page=<?= $item_per_page ?>&page=<?= $first_page ?>"><span><strong>First</strong></span></a>
-        <?php
-        }
-        ?>
-
-        <?php
-        for($num = 1; $num <= $total_page; $num++)
-        {
-        if($num != $current_page)
-        {
-        if($num > $current_page - 3 && $num < $current_page + 3)
-        {
-        ?>
-        <a href="?<?= $param ?>per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span><?= $num ?></span></a>
-        <?php
-        }
-        }
-        else // Tô màu cho trang đã chọn
-        {
-        ?>
-        <a href="?<?= $param ?>per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span class="select"><?= $num ?></span></a>
-        <?php
-        }
-        }
-        ?>
-
-        <?php
-        if($current_page < $total_page - 3)
-        {
-        $end_page = $total_page;
-        ?>
-        <a href="?<?= $param ?>per_page=<?= $item_per_page ?>&page=<?= $end_page ?>"><span><strong>Last</strong></span></a>
-        <?php
-        }
-        ?>
-    </div>
-    <?php
-    }
-    ?>
 
 </div>
+@{
+    string Rating_Stars(int rate)
+    {
+        string str = "";
+        switch (rate)
+        {
+            case 1:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 2:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 3:
+                {
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 4:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+
+                    break;
+                }
+            case 5:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    break;
+                }
+            default:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    break;
+                }
+
+        }
+        return str;
+    }
+
+}
 
 
 

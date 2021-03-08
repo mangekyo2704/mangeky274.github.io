@@ -1,0 +1,209 @@
+﻿
+
+@using FruitShopSolution.ViewModel.Catalog.Promotion;
+@using FruitShopSolution.ViewModel.Catalog.Products;
+@using FruitShopSolution.ViewModel.Common;
+@model List<ProductViewModel>;
+@{
+    ViewData["Title"] = "Promotion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<PromotionViewModel> promotions = new List<PromotionViewModel>();
+    promotions = ViewBag.Promotions;
+    List<string> Status = new List<string>();
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách khuyến mãi</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách khuyến mãi</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Promotion">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="" name="keyword" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="categoryId" onchange="this.form.submit()" class="form-control">
+                                    <option>--Chọn danh mục--</option>
+                                    <option>Đang hiệu lực</option>
+                                    <option>Hết hạn</option>
+                                </select>
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Promotion/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    @*<div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="" id="keyword1" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <select id="category" onchange="LoadProduct()" class="form-control">
+                                    <option>--Chọn danh mục--</option>
+                                    @{
+                                        foreach (var i in categories)
+                                        {
+                                            <option value="@i.CategoryId">@i.Title</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive" id="tabledata">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Khuyến mãi
+                            </th>
+                            <th>
+                                Từ ngày
+                            </th>
+                            <th>
+                                Đến ngày
+                            </th>
+                            <th>
+                                % Giảm giá
+                            </th>
+                            <th>
+                                Chi tiết
+                            </th>
+                            <th>
+                                Trạng thái
+                            </th>
+                            <th>
+                                Sản phẩm
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in promotions)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FromDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ToDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DiscountPercent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Content)
+                            </td>
+                            <td>
+                                @{
+                                    string status = "";
+                                    if (item.Status == 1) status = "Hiệu lực";
+                                    else status = "Vô hiệu";
+                                }
+                                @Html.DisplayFor(modelItem => status)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("ViewDetail","Promotion",new { promotionId = item.PromotionId})">Xem</a>
+                            </td>
+                            <td>
+                                @*                                    @Html.ActionLink("Sửa", "Update", new {
+                  PromotionId = item.PromotionId,
+                  DiscountPercent = item.DiscountPercent,
+                  Title = item.Title
+                  Content
+                  FromDate
+                  ToDate
+            }) |*@
+                                @*                                @Html.ActionLink("Xem", "Details", new { id = item.Id }) |*@
+                                <button class="btn-success" onclick="Update(@item.PromotionId)">Huỷ</button>
+                                @* @Html.ActionLink("Gán danh mục", "CategoryAssign", new { id = item.Id }) |*@
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+@*
+        @{
+            Func<int?, string> generateUrl = (int? _pagenumber) =>
+            {
+                if (_pagenumber == null) _pagenumber = 1;
+                return Url.Action("Index", new { pageIndex = _pagenumber, pageSize = 5 });
+            };
+            PageModel page = new PageModel();
+            PageModel page = ViewBag.Page;
+            if (page.PageIndex == 0)
+            {
+                page.PageIndex = 1;
+                page.TotalPage = 4;
+            }
+            var datapaging = new
+            {
+                currentPage = page.PageIndex,    // trang hiện tại
+                countPages = page.TotalPage,   // tổng  số trang
+                generateUrl = generateUrl
+            };
+        }*@
+
+@*        <div class="paging">
+            <style>
+                .pagination {
+                    padding-left: 1240px;
+                    margin: auto;
+                }
+            </style>
+            <partial name="_Paging" model="@datapaging" />
+        </div>*@
+
+    </div>
+</div>
+<script>
+    function Update(id) {
+        $.ajax
+            ({
+                url: '@Url.Action("CancelPromotions")', // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là get
+                data:
+                {
+                    'cancelPromotionId': id
+                },
+                success: function (result) {
+                    $('#msgAlert').text("Đã xác nhận đơn hàng");
+                    $("#tabledata").load("@Url.Action("Index","Promotion") #tabledata");
+                },
+                error: function (result) {
+                }
+            });
+    };
+</script>
+

@@ -10,6 +10,8 @@ namespace FruitShopSolution.Data.Enums
         Confirmed,
         Shipping,
         Success,
-        Canceled
+        Canceled,
+        Packed,
+        Delivered
     }
 }

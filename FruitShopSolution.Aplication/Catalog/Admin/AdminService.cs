@@ -15,7 +15,6 @@ namespace FruitShopSolution.Application.Catalog.Admin
     {
         //private readonly StoreContext _context = new StoreContext();
         private readonly FruitShopDbContext _context;
-        public AdminService() { }
         public AdminService(FruitShopDbContext context)
         {
             _context = context;
@@ -24,13 +23,11 @@ namespace FruitShopSolution.Application.Catalog.Admin
         {
             //var admin = await _context.Admins.FindAsync(loginRequest.UserName);
             var admin = from p in _context.Admins
-                        where loginRequest.UserName == p.Username
+                        where p.Username == loginRequest.UserName
                         select p;
-            foreach (var i in admin)
-                Console.WriteLine(i.Name);
             if (admin == null) throw new Exception("User chua duoc dang ky");
             admin.Where(x => x.Password.Contains(loginRequest.Password));
-            if (admin.Count() > 0)
+            if (admin != null)
             {
                 return new AdminViewModel()
                 {
@@ -41,25 +38,25 @@ namespace FruitShopSolution.Application.Catalog.Admin
             }
             else
                 return null;
-            /*            AdminViewModel admin = new AdminViewModel();
-                        using (SqlConnection conn = _context.GetConnection())
-                        {
+            /*AdminViewModel admin = new AdminViewModel();
+            using (SqlConnection conn = new SqlConnection("Data Source =.\\sqlexpress; Initial Catalog = FruitShopDatabase; Integrated Security = True")) 
+            {
 
-                            conn.Open();
-                            var str = $"select * from Admin where UserName = {loginRequest.UserName}";
-                            SqlCommand cmd = new SqlCommand(str, conn);
-                            using (var reader = cmd.ExecuteReader())
-                            {
-                                if (!reader.HasRows) return null;
-                                reader.Read();
-                                admin.Name = reader["Name"].ToString();
-                                admin.UserName = reader["UserName"].ToString();
-                                admin.Password = reader["Password"].ToString();
-                            }
-                        }
-                        return admin;
-                    }*/
+                conn.Open();
+                var str = $"select * from Admins where Username = {loginRequest.UserName}";
+                SqlCommand cmd = new SqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (!reader.HasRows) return null;
+                    reader.Read();
+                    admin.Name = reader["Name"].ToString();
+                    admin.UserName = reader["UserName"].ToString();
+                    admin.Password = reader["Password"].ToString();
+                }
+            }
+            return admin;*/
         }
-
     }
+
+
 }

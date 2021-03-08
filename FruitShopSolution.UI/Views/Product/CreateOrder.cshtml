@@ -1,8 +1,14 @@
-﻿@model  FruitShopSolution.ViewModel.Catalog.Order.CreateOrderRequest;
+﻿@model FruitShopSolution.ViewModel.Catalog.Order.CreateOrderRequest;
 @{
     ViewData["Title"] = "ViewOrder";
 }
-
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+    UserViewModel user = ViewBag.User;
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
 <h1>Thông tin order</h1>
 <p>
     @Model.ShipName
@@ -11,12 +17,12 @@
     @Model.ShipPhoneNumber
     @Model.OrderDate
 </p>
-    @{ 
-        foreach(var i in Model.ListProduct)
-        {
-            <p>@i.ProductId</p>
-        }
+@{
+    foreach (var i in Model.ListProduct)
+    {
+        <p>@i.ProductId</p>
     }
+}
 
 
 

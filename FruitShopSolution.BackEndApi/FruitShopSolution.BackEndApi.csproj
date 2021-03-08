@@ -9,12 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FruitShopSolution.Aplication\FruitShopSolution.Application.csproj" />
-    <ProjectReference Include="..\FruitShopSolution.Data\FruitShopSolution.Data.csproj" />
-    <ProjectReference Include="..\FruitShopSolution.ViewModel\FruitShopSolution.ViewModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\user-content\" />
   </ItemGroup>
 

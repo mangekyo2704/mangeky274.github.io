@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FruitShopSolution.Application.Catalog.Admin;
+using FruitShopSolution.Application.Catalog.Cart;
 using FruitShopSolution.Application.Catalog.Categories;
-using FruitShopSolution.Application.Catalog.Products;
+using FruitShopSolution.Application.Catalog.Order;
 using FruitShopSolution.Application.Catalog.Users;
+using FruitShopSolution.Application.Catalog.Products;
 using FruitShopSolution.Application.Common.Email;
 using FruitShopSolution.Data.EF;
 using FruitShopSolution.UI.Models;
@@ -17,6 +19,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FruitShopSolution.Application.Catalog.Promotion;
+using FruitShopSolution.UI.Stripe;
+using Stripe;
 
 namespace FruitShopSolution.UI
 {
@@ -40,19 +45,27 @@ namespace FruitShopSolution.UI
             });
             services.AddOptions();                                         // Kích hoạt Options
             var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
-            services.Configure<MailSettings>(mailsettings);                // đăng ký để Inject
+            services.Configure<MailSettings>(mailsettings);
+            var stripestring = Configuration.GetSection("StripeSetting");
+            // đăng ký để Inject
+            services.Configure<StripeSetting>(Configuration.GetSection("StripeSetting"));  
+            // đăng ký để Inject
             services.AddControllersWithViews();
             services.AddDbContext<FruitShopDbContext>(options =>
         options.UseSqlServer("Data Source =.\\sqlexpress; Initial Catalog = FruitShopDatabase; Integrated Security = True"));
-            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<Application.Catalog.Products.IProductService, Application.Catalog.Products.ProductService>();
+            services.AddTransient<Models.IProductService, Models.ProductService>();
             services.AddTransient<ISendMailService, SendMailService>();
             /*            services.AddTransient<IProductPublicService, PublicProductService>();*/
             /*            services.AddTransient<IProductManageService, ManageProductService>();
                         // services.AddTransient<IProductImageService, ProductImageService>();
                         services.AddTransient<IStorageService, StorageService>();*/
-            /*            services.AddTransient<IUserService, UserService>();
-                        services.AddTransient<IAdminService, AdminService>();
-                        services.AddTransient<ICategoryService, CategoryService>();*/
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICartService, CartService>();
+            services.AddTransient<IOrderService, Application.Catalog.Order.OrderService>();
+            services.AddTransient<IPromotionService, PromotionService>();
+            /*services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<ICategoryService, CategoryService>();*/
 
             IMvcBuilder builder = services.AddRazorPages();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -66,8 +79,11 @@ namespace FruitShopSolution.UI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

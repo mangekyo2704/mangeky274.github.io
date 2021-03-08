@@ -1,10 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FruitShopSolution.Application.Catalog.Admin;
 using FruitShopSolution.Application.Catalog.Categories;
+using FruitShopSolution.Application.Catalog.Order;
 using FruitShopSolution.Application.Catalog.Products;
+using FruitShopSolution.Application.Catalog.Promotion;
+using FruitShopSolution.Application.Catalog.Report;
 using FruitShopSolution.Application.Catalog.Users;
 using FruitShopSolution.Application.Common;
 using FruitShopSolution.Data.EF;
@@ -30,6 +33,13 @@ namespace FruitShopSolution.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
+            services.AddSession(cfg =>
+            {                    // Đăng ký dịch vụ Session
+                cfg.Cookie.Name = "admin";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+                cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session
+            });
             services.AddDbContext<FruitShopDbContext>(options =>
         options.UseSqlServer("Data Source =.\\sqlexpress; Initial Catalog = FruitShopDatabase; Integrated Security = True"));
             services.AddControllersWithViews();
@@ -38,8 +48,12 @@ namespace FruitShopSolution.WebApp
             //services.AddTransient<IProductImageService, ProductImageService>();
             services.AddTransient<IStorageService, StorageService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IReportService, ReportService>();
+            services.AddTransient<IPromotionService, PromotionService>();
             services.AddRazorPages()
         .AddRazorRuntimeCompilation();
         }
@@ -63,12 +77,12 @@ namespace FruitShopSolution.WebApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Admin}/{action=Index}/{id?}");
+                    name: "",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

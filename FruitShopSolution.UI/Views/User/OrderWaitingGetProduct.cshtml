@@ -1,0 +1,187 @@
+﻿@using FruitShopSolution.ViewModel.Catalog.Order;
+@{
+    Layout = "_LayoutProfile";
+    List<OrderViewModel> orders;
+    if (ViewBag.Order == null)
+    {
+        orders = new List<OrderViewModel>();
+    }
+    else
+    {
+        orders = ViewBag.Order;
+    }
+}
+
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@{
+    ViewData["Title"] = "Sản Phẩm";
+    UserViewModel user = ViewBag.User;
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_ViewInfo", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
+
+
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h1><i class="fa fa-address-card-o"></i> &nbsp;TNT FRUIT</h1>
+        <ul>
+            <li class="choice"><a href="/User/viewinfo"><i class="fa fa-home"></i> &nbsp;Thông Tin</a></li>
+            <li><a href="@Url.Action("ViewInfoUser")"><i class="fa fa-user"></i> &nbsp;Hồ Sơ</a></li>
+            <li class="choice" active><a href="/User/ViewOrder"><i class="fa fa-cart-arrow-down"></i> &nbsp;Tất Cả Đơn Hàng</a></li>
+            <li class="choice" active><a href="/User/OrderInprocess"><i class="fa fa-spinner fa-2x"></i> &nbsp;Đơn hàng chờ xác nhận</a></li>
+            <li class="choice" active><a href="/User/OrderWaitingGetProduct"><i class="fa fa-tasks fa-2x"></i> &nbsp;Đơn hàng chờ lấy hàng</a></li>
+            <li class="choice" active><a href="/User/OrderShipping"><i class="fa fa-tasks fa-2x"></i> &nbsp;Đơn hàng đang giao</a></li>
+            <li class="choice" active><a href="/User/OrderSuccess"><i class="fa fa-check-circle fa-2x"></i> &nbsp;Đơn hàng hoàn thành</a></li>
+            <li class="choice" active><a href="/User/OrderCancel"><i class="fa fa-times-circle"></i> &nbsp;Đơn hàng bị huỷ</a></li>
+            <li><a href="@Url.Action("Logout","User")" style="font-weight: bolder"><i class="fa fa-sign-out"></i> &nbsp;Đăng Xuất</a></li>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </ul>
+        <!-- <div class="social_media">
+            <a href="#"><i class="fa fa-facebook-f"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+        </div> -->
+    </div>
+
+
+    <div class="main_content">
+        <div class="header-1">
+            <h3>Chào @user.LastName, chúc bạn một ngày mới tốt lành nhé!  &nbsp;<i class="fa fa-smile-o"></i></h3>
+            <span class="Time" id="Time">
+                <i class="fa fa-calendar"></i> &nbsp;
+                @DateTime.Now
+            </span>
+        </div>
+        <p style="font-weight: bolder;">*Làm mới trang để xem tình trạng đơn hàng</p>
+
+        <div class="info">
+
+            <h1 style="padding: 10px; display: flex; justify-content: center; font-size: 50px;">Đơn Hàng</h1>
+            <div class="pf-order">
+
+                @{
+                    if (orders.Count <= 0)
+                    {
+                        <h1 style="letter-spacing: 2px;">Bạn không có đơn hàng nào đang chờ!</h1><br>
+                    }
+                    else
+                    {
+
+                        <table border="1" cellspacing="0" align="center" id="loadorder">
+                            <tr class="table-title">
+                                <th>STT</th>
+                                <th>Thông Tin Đơn Hàng</th>
+                                <th>Tổng Tiền</th>
+                                <th>Ngày Đặt Hàng</th>
+                                <th>Địa Chỉ Nhận Hàng</th>
+                                <th>Trạng Thái Đơn Hàng</th>
+                            </tr>
+                            @{
+                                int number = 0;
+                                foreach (var i in orders)
+                                {
+                                    number++;
+                                    <tr class="table-content">
+                                        <td>@number</td>
+
+                                        <td>
+                                            <table border="1" cellspacing="0">
+                                                <tr class="table-title">
+                                                    <th>Số Thứ Tự</th>
+                                                    <th>Ảnh</th>
+                                                    <th>Tên Sản Phẩm</th>
+                                                    <th>Giá</th>
+                                                    <th>Số Lượng</th>
+                                                </tr>
+                                                @{
+                                                    int stt_ordertails = 0;
+                                                    foreach (var item in i.OrderDetails)
+                                                    {
+                                                        stt_ordertails++;
+                                                        <tr>
+                                                            <td>
+                                                                @stt_ordertails
+                                                            </td>
+                                                            <td>
+                                                                <img style="width: 40%; height: 40%; padding: 0;" src="@item.Products.ListImages[0].imagepath">
+                                                            </td>
+                                                            <td>
+                                                                @item.Products.pro.Title
+                                                            </td>
+                                                            <td>
+                                                                @Convert.ToDecimal(item.Price).ToString("#,##0") <small><strong><u>VNĐ</u></strong></small>
+                                                            </td>
+                                                            <td>
+                                                                @item.Quanity
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <h3 style="color: #7824ff">@Convert.ToDecimal(i.TotalPrice).ToString("#,##0") <small><strong><u>VNĐ</u></strong></small></h3>
+                                        </td>
+                                        <td>
+                                            @i.OrderDate
+                                        </td>
+                                        <td>
+                                            @i.ShipAddress
+                                        </td>
+                                        <td>
+
+
+                                            <h4 style="color: #0bd41b; font-weight: bolder;">Waiting for the goods</h4>
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    }
+                }
+            </div>
+            <div id="notify"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Delete_Order(id) {
+        $.ajax
+            ({
+                url: "@Url.Action("DeleteOrder","User")", // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là post
+                dateType: "text", // dữ liệu trả về dạng text
+                data:
+                {
+                    OrderId: id,
+                },
+                success: function (result) {
+                    $("#notify").text(result);
+                    $("#loadorder").load("@Url.Action("ViewOrder","User") #loadorder");
+                }
+            });
+    }
+</script>

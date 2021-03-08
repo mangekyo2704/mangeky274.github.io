@@ -12,6 +12,7 @@ namespace FruitShopSolution.ViewModel.Catalog.Products
         public decimal OutputCount { get; set; }
         public int Quantity { get; set; }
         public string Content { get; set; }
+        public string Unit { get; set; }
         public DateTime DateCreated { get; set; }
     }
 }

@@ -38,13 +38,13 @@ namespace FruitShopSolution.Application.Catalog.Products
         }
         public async Task<int> Create(ProductCreateRequest request)
         {
+            if (request.Unit == null) request.Unit = "Trái";
             var product = new Product
             {
                 InputCount = request.InputCount,
                 Origin = request.Origin,
                 Title = request.Title,
-                OutputCount = request.OutputCount,
-
+                OutputCount = request.OutputCount,                
                 Quantity = request.Quantity,
                 Content = request.Content,
                 DateCreated = DateTime.Now
@@ -70,7 +70,13 @@ namespace FruitShopSolution.Application.Catalog.Products
                         }*/
             context.Products.Add(product);
             int pro = await context.SaveChangesAsync();
+            int productId = product.ProductId;
             int img = await AddImages(product.ProductId, request.ThumnailImage);
+            foreach(var i in request.categoryId)
+            {
+                context.ProductInCategories.Add(new ProductInCategory() { CategoryId = i, ProductId = productId });
+            }           
+            if(await context.SaveChangesAsync()<=0) throw new Exception("Không thêm được vào danh mục");
             if (pro < 0) return 0;
             if (img < 0) return -1;
             return 1;
@@ -84,7 +90,8 @@ namespace FruitShopSolution.Application.Catalog.Products
             product.Title = request.Title;
             product.Origin = request.Origin;
             product.Quantity = request.Quantity;
-            product.InputCount = request.InputCount;
+            product.OutputCount = request.Quantity;
+            //product.InputCount = request.InputCount;
             product.ProductId = request.ProductId;
             //update anh
             return await context.SaveChangesAsync();
@@ -116,6 +123,7 @@ namespace FruitShopSolution.Application.Catalog.Products
             List<ProductViewModel> listData = new List<ProductViewModel>();
             var query = from p in context.Products
                         select p;
+            query = query.OrderByDescending(x => x.ProductId);
             foreach (var i in query)
             {
                 ProductViewModel pro = new ProductViewModel()
@@ -141,6 +149,7 @@ namespace FruitShopSolution.Application.Catalog.Products
                         join pt in context.ProductInCategories on p.ProductId equals pt.ProductId
                         join c in context.Categories on pt.CategoryId equals c.CategoryId
                         select new { p, c, pt };
+            query = query.OrderByDescending(x => x.p.ProductId);
             //2.Query
             if (!String.IsNullOrEmpty(request.Keywork))
             {
@@ -174,16 +183,6 @@ namespace FruitShopSolution.Application.Catalog.Products
                         };
                         return pageResult;*/
             return data;
-        }
-
-        public async Task<bool> UpdateOutputPrice(int productId, decimal newPrice)
-        {
-            var product = await context.Products.FindAsync(productId);
-            if (product == null) new Exception("Không tim thấy sản phẩm");
-            product.OutputCount = newPrice;
-            if (await context.SaveChangesAsync() != 0)
-                return true;
-            return false;
         }
 
         public async Task<ProductViewModel> GetById(int productId)
@@ -224,12 +223,24 @@ namespace FruitShopSolution.Application.Catalog.Products
                     OutputCount = i.OutputCount,
                     ProductId = i.ProductId,
                     Quantity = i.Quantity,
-                    Title = i.Title
+                    Title = i.Title,                   
                 };
                 listData.Add(pro);
             }
             return listData;
         }
+
+        public async Task<bool> UpdateOutputPrice(int productId, decimal newPrice)
+        {
+            var product = await context.Products.FindAsync(productId);
+            if (product == null) new Exception("Không tim thấy sản phẩm");
+            product.OutputCount = newPrice;
+            if (await context.SaveChangesAsync() != 0)
+                return true;
+            return false;
+        }
+
+
         public async Task<int> AddImage(int productId, IFormFile files)
         {
             var product = await context.Products.FindAsync(productId);
@@ -259,25 +270,28 @@ namespace FruitShopSolution.Application.Catalog.Products
         {
             var product = await context.Products.FindAsync(productId);
             if (product == null) new Exception("Không tim thấy sản phẩm");
-            foreach (var file in files)
+            if (files != null)
             {
-                if (file.Length > 0)
+                foreach (var file in files)
                 {
-                    var filePath = Path.GetTempFileName();
-
-                    using (var stream = System.IO.File.Create(filePath))
+                    if (file.Length > 0)
                     {
-                        await file.CopyToAsync(stream);
+                        var filePath = Path.GetTempFileName();
+
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
                     }
+                    var productImage = new ProductImage()
+                    {
+                        productId = productId,
+                        caption = $"ảnh {product.Title}",
+                        imagepath = await this.SaveFile(file),
+                        isDefault = true
+                    };
+                    await context.ProductImages.AddAsync(productImage);
                 }
-                var productImage = new ProductImage()
-                {
-                    productId = productId,
-                    caption = $"ảnh {product.Title}",
-                    imagepath = await this.SaveFile(file),
-                    isDefault = true
-                };
-                await context.ProductImages.AddAsync(productImage);
             }
             return await context.SaveChangesAsync();
         }

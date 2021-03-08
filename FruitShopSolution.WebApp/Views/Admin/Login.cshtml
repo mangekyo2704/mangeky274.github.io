@@ -30,20 +30,19 @@
                                     <form asp-controller="Admin" asp-action="Login" method="post">
                                         <div class="form-group">
                                             <label class="small mb-1">Email</label>
-                                            <input class="form-control py-4" asp-for="UserName" type="text" placeholder="Enter email address" />
+                                            <input class="form-control py-4" asp-for="UserName" type="text" value="admin" />
                                         </div>
                                         <div class="form-group">
                                             <label class="small mb-1">Password</label>
-                                            <input class="form-control py-4" asp-for="Password" type="password" placeholder="Enter password" />
+                                            <input class="form-control py-4" asp-for="Password" type="password" value="admin" />
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                                                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" checked/>
                                                 <label class="custom-control-label">Remember password</label>
                                             </div>
                                         </div>
                                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            <a class="small" href="password.html">Quên mật khẩu?</a>
                                             <button class="btn btn-primary" type="submit">Đăng nhập</button>
                                         </div>
                                     </form>

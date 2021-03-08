@@ -15,6 +15,7 @@ namespace FruitShopSolution.Data.Entities
         public string ShipEmail { get; set; }
         public string ShipPhoneNumber { get; set; }
         public StatusOrder Status { get; set; }
+        public int Payment { get; set; }
         public int Discount { get; set; }
         public decimal ShipPrice { get; set; }
         public decimal  TotalPrice { get; set; }

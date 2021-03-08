@@ -1,179 +1,208 @@
 ﻿@model FruitShopSolution.ViewModel.Catalog.Products.ProductInfoViewModel;
+@using FruitShopSolution.ViewModel.Catalog.Products;
 @using FruitShopSolution.ViewModel.Catalog.Products.Manage;
-@{ 
-    Layout = "~View/Shared/_Layout.cshtml";
+@using FruitShopSolution.ViewModel.Common;
+@{
+    List<ProductInfoViewModel> listData = ViewBag.Products;
+    int current_page = ViewBag.PageIndex;
     var request = new GetManageProductPagingRequest()
     {
-        PageIndex=2,
-        PageSize=6
+        PageIndex = 2,
+        PageSize = 12
     };
+    PageModel page = ViewBag.Page;
 }
-        <!------ All products ------>
-        <div class="small-container">
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@{
+    ViewData["Title"] = "Sản Phẩm";
+    UserViewModel user = ViewBag.User;
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
+<!------ All products ------>
+<div class="small-container">
 
-            <div class="row row-2">
-                <h1>Tất Cả Sản Phẩm</h1>
-                <select name="Sort">
-                    <option selected>Sắp xếp theo giá</option>
-                    <option>Sắp xếp theo giá</option>
-                    <option>Sắp xếp theo giá</option>
-                    <option>Sắp xếp theo giá</option>
-                    <option>Sắp xếp theo giá</option>
-                </select>
-            </div>
+    <div class="row row-2">
+        <h1>Tất Cả Sản Phẩm</h1>
+        <select name="Sort" id="Sort" onchange="Sort()">
+            <option selected value="0">Sắp xếp mặc định</option>
+            <option value="1">Sắp xếp theo giá tăng dần</option>
+            <option value="2">Sắp xếp theo giá giẩm dần</option>
+            <option value="3">Sắp xếp theo tên A - Z</option>
+            <option value="4">Sắp xếp theo tên Z - A</option>
+        </select>
+    </div>
 
 
-            <!------ Phân trang ------>
-            <div class="page-btn">
-                <?php
-                if($current_page > 3)
+    <!------ Phân trang ------>
+    <div class="body_viewall">
+        <div class="page-btn">
+
+            @{
+                int num = 1;
+                @*<a href="@Url.Action("Viewall","Product",new { PageIndex = 1,PageSize =12})" class="@num"><span>First</span></a>*@
+
+                for (num = 1; num <= page.TotalPage; num++)
                 {
-                $first_page = 1;
-
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $first_page ?>"><span><strong>First</strong></span></a>
-                <?php
+                    if (num != current_page)
+                    {
+                        //if (num > page.PageIndex - 3 && num < page.PageIndex + 3)
+                        {
+                            <a href="@Url.Action("Viewall","Product",new { PageIndex = num,PageSize =12})" class="@num"><span>@num</span></a>
+                            //<button onclick="Update(@num)" class="@num"><span>@num</span></button>
+                        }
+                    }
+                    else // Tô màu cho trang đã chọn
+                    {
+                        <a href="#"><span class="select">@num</span></a>
+                    }
                 }
-                ?>
-
-                <?php
-                for($num = 1; $num <= $total_page; $num++)
-                {
-                if($num != $current_page)
-                {
-                if($num > $current_page - 3 && $num < $current_page + 3)
-                {
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span><?= $num ?></span></a>
-                <?php
-                }
-                }
-                else // Tô màu cho trang đã chọn
-                {
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span class="select"><?= $num ?></span></a>
-                <?php
-                }
-                }
-                ?>
-
-                <?php
-                if($current_page < $total_page - 3)
-                {
-                $end_page = $total_page;
-
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $end_page ?>"><span><strong>Last</strong></span></a>
-                <?php
-                }
-                ?>
-            </div>
-
-
-            <!------ Hiển thị toàn bộ sản phẩm ------>
-            <div class="row">
-                <?php
-                while ($row = $Products->fetch_array())
-                {
-                ?>
-                <div class="col-4 add-border">
-                    <a href="Product_detail.php?id=<?= $row['Pro_ID'] ?>">
-                        <img src="<?= $row['Pro_Img'] ?>">
-                        <h3><?= $row['Pro_Name'] ?></h3>
-                        <div class="rating">
-                            <?php
-                            Rating_Stars($row['Pro_Rate']);
-                            ?>
-                        </div>
-                        <p><?= number_format($row['Pro_Price'], 0, ",", ".") ?> VNĐ/1kg</p>
-                        <span>
-                            <a><i class="fa fa-cart-plus" onclick="Cart(<?= $row['Pro_ID'] ?>)"></i></a>
-                        </span>
-                    </a>
-                </div>
-                <?php
-                }
-                ?>
-            </div>
-
-
-            <!------ Phân trang ------>
-            <div class="page-btn">
-                <?php
-                if($current_page > 3)
-                {
-                $first_page = 1;
-
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $first_page ?>"><span><strong>First</strong></span></a>
-                <?php
-                }
-                ?>
-
-                <?php
-                for($num = 1; $num <= $total_page; $num++)
-                {
-                if($num != $current_page)
-                {
-                if($num > $current_page - 3 && $num < $current_page + 3)
-                {
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span><?= $num ?></span></a>
-                <?php
-                }
-                }
-                else // Tô màu cho trang đã chọn
-                {
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $num ?>"><span class="select"><?= $num ?></span></a>
-                <?php
-                }
-                }
-                ?>
-
-                <?php
-                if($current_page < $total_page - 3)
-                {
-                $end_page = $total_page;
-
-                ?>
-                <a href="?per_page=<?= $item_per_page ?>&page=<?= $end_page ?>"><span><strong>Last</strong></span></a>
-                <?php
-                }
-                ?>
-            </div>
-
+                @*<a href="@Url.Action("Viewall","Product",new { PageIndex = page.TotalPage,PageSize =12})"><span><strong>Last</strong></span></a>*@
+            }
         </div>
 
 
+        <!------ Hiển thị toàn bộ sản phẩm ------>
+        <div class="row" id="row" style="justify-content:center">
+            @{
+                foreach (var i in listData)
+                {
+                    <div class="col-4 add-border">
+                        <style>
+                        </style>
+                        <a href="@Url.Action("viewdetail", "product",new { proId = i.pro.ProductId})">
+                            <img src="@i.ListImages.FirstOrDefault().imagepath" style="height:168px">
+                            <h3>@i.pro.Title</h3>
+                            <div class="rating">
+
+                            </div>
+                            @{
+                                if (i.Discount != 100 && i.Discount != 0)
+                                {
+                                    <p style="text-decoration: line-through;">@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/@i.pro.Unit</p>
+                                    <p>@Convert.ToDecimal(i.pro.OutputCount * (1 - (decimal)i.Discount / 100)).ToString("#,##0") VNĐ/@i.pro.Unit</p>
+                                }
+                                else
+                                {
+                                    <p>@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/@i.pro.Unit</p><br>
+                                }
+                            }
+@*                            <span>
+                                <a onclick="addcart(@i.pro.ProductId)"><i class="fa fa-cart-plus"></i></a>
+                            </span>*@
+                        </a>
+                    </div>
+                }
+            }
+        </div>
 
 
-        <!-- To top-->
-        <a rel="external" href="#" class="to-top">
-            <i class="fa fa-arrow-circle-up"></i>
-        </a>
+        <!------ Phân trang ------>
+
+        @{
+            Func<int?, string> generateUrl = (int? _pagenumber) =>
+            {
+                if (_pagenumber == null) _pagenumber = 1;
+                return Url.Action("Viewall", new { PageIndex = _pagenumber, PageSize = 5 });
+            };
+
+            if (page.TotalPage == 0)
+            {
+                page.PageIndex = 1;
+                page.TotalPage = 5;
+            }
+            var datapaging = new
+            {
+                currentPage = page.PageIndex,    // trang hiện tại
+                countPages = page.TotalPage,   // tổng  số trang
+                generateUrl = generateUrl
+            };
+        }
+        @*    <div class="paging">
+            <style>
+                .pagination {
+                    padding-left: 1240px;
+                    margin: auto;
+                }
+            </style>
+            <partial name="_Paging" model="@datapaging" />
+        </div>
+        <div class="page-btn">*@
+
+        @*@{
+            if (request.PageIndex > 3)
+            {
+                <a href="@Url.Action("Viewall","Product",new { PageIndex = num,PageSize =2})" class="@num"><span>@num</span></a>
+            }
+
+            for (num = 2; num <= 6; num++)
+            {
+                if (num != current_page)
+                {
+                    if (num > current_page - 3 && num < current_page + 3)
+                    {
+                        <a href="@Url.Action("Viewall","Product",new { PageIndex = num,PageSize =2})" class="@num"><span>@num</span></a>
+                    }
+                }
+                else // Tô màu cho trang đã chọn
+                {
+                    <a href="#"><span class="select">@num</span></a>
+                }
+            }
+            <a href="?per_page=<?= $item_per_page ?>&page=<?= $end_page ?>"><span><strong>Last</strong></span></a>
+
+        }*@
+    </div>
+
+</div>
 
 
-    <script src="../JAVASCRIPT/main.js"></script>
-    <script type="text/javascript">
-                // function Cart(id)
-                // {
-                //     $(function()
-                //     {
-                //         $.ajax(
-                //         {
-                //             url: "Cart_Process.php", // gửi ajax lên server
-                //             type: "post", // chọn phương thức gửi là post
-                //             dateType: "text", // dữ liệu trả về dạng text
-                //             data:
-                //             { // Danh sách các thuộc tính sẽ gửi đi
-                //                 id: id,
-                //             },
-                //             success: function (result)
-                //             {
-                //             }
-                //         });
-                //     });
-                // }
-    </script>
+
+
+<!-- To top-->
+<a rel="external" href="#" class="to-top">
+    <i class="fa fa-arrow-circle-up"></i>
+</a>
+
+
+<script type="text/javascript">
+
+
+@*        function addcart(id) {
+            $.ajax(
+                {
+                    url: "@Url.RouteUrl("addcart")", // gửi ajax đến file
+                    type: "post", // chọn phương thức gửi là get
+                    dateType: "text", // dữ liệu trả về dạng text
+                    data:
+                    {
+                        'productid': id                      
+                    },
+                    success: function (result) {
+                        $("#value").text($("#number").val());
+                        $("#numbercart").text(result);
+                    }
+                });
+        });*@
+        function Sort() {
+            var str = $("#Sort").val();
+        $.ajax
+            ({
+                url: '@Url.Action("Sort",new { PageIndex = page.PageIndex})', // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là get
+                data:
+                {
+                    sort: str
+
+                },
+                success: function (result) {
+
+                    var obj = JSON.parse(result);
+                    var url = "@Url.Action("ViewAll")?PageIndex=" + obj.PageIndex +"&sort=" + obj.Sort
+                    console.log(url);
+                    $("#row").load(url+" #row");
+                }
+            });
+    };
+</script>
 

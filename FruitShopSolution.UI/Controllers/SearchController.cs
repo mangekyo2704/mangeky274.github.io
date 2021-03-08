@@ -15,11 +15,19 @@ namespace FruitShopSolution.UI.Controllers
         {
             _proService = product;
         }
-        public async Task<IActionResult> Index(string? keyword)
+        public async Task<IActionResult> Index(string Search)
         {
-            List<ProductInfoViewModel> listProduct =  await _proService.Searching(keyword);
-            ViewBag.Keyword = keyword;
-            return View(listProduct);
+            List<ProductInfoViewModel> listProduct;
+            if (Search == null)
+            {
+                listProduct = await _proService.GetAllProduct();
+            }
+             listProduct =  await _proService.Searching(Search);
+            ViewBag.Keyword = Search;
+            ViewBag.Products = listProduct;
+            ViewBag.User = new SessionService(HttpContext.Session).GetUserLogined();
+            ViewBag.ProductsCount = new SessionService(HttpContext.Session).GetCartItems().Count();
+            return View();
         }
     }
 }

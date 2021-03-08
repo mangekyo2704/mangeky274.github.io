@@ -20,7 +20,9 @@ namespace FruitShopSolution.Data.EF
             modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-
+            modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductsInPromotionConfiguration());
+            modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.Seed();
         }
         public DbSet<Product> Products { get; set; }
@@ -32,6 +34,9 @@ namespace FruitShopSolution.Data.EF
         public DbSet<User> Users { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<ProductInCategory> ProductInCategories { get; set; }
-        
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<ProductsInPromotion> ProductsInPromotion { get; set; }
+
     }
 }

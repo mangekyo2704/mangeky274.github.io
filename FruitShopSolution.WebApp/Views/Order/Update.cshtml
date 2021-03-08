@@ -1,0 +1,40 @@
+﻿@model FruitShopSolution.ViewModel.Catalog.Order.UpdateOrderRequest
+@using FruitShopSolution.ViewModel.Catalog.Order;
+
+@{
+    OrderViewModel order = new OrderViewModel();
+    order = ViewBag.Order;
+    ViewData["Title"] = "Cập nhật Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <h1 class="mt-4">Cập nhật sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật sản phẩm</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Product">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="Update" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="OrderId" value="@order.OrderId" />
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label">Trạng thái</label>
+                        <select name="status" asp-for="Status" class="form-control" asp-items="ViewBag.Status">
+                            <option>--Chọn danh mục--</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

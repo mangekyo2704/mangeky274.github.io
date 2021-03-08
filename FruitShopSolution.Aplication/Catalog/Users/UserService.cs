@@ -17,22 +17,27 @@ namespace FruitShopSolution.Application.Catalog.Users
         }
         public async Task<UserViewModel> Accuracy(LoginRequest loginRequest)
         {
-            var user = await _context.Users.FindAsync(loginRequest.UserName);
+            if(loginRequest.UserName == null || loginRequest.Password == null) throw new Exception("Vui lòng nhập đầy đủ");
+            var query = from u in _context.Users where u.UserName == loginRequest.UserName select u;
+            var user = query.FirstOrDefault();
             if (user == null) throw new Exception("User chua duoc dang ky");
             if (user.Password == loginRequest.Password)
                 return new UserViewModel()
                 {
+                    UserId = user.UserId,
                     UserName = user.UserName,
                     Password = user.Password,
-                    DateCreated = user.DateCreated,
+                    BirthDay = user.DateCreated,
                     Email = user.Email,
                     FristName = user.FristName,
                     LastLogin = user.LastLogin,
                     LastName = user.LastName,
-                    Phone = user.Phone
+                    Phone = user.Phone,
+                    Gender = user.Gender,
+                    Address = user.Address
                 };
             else
-                return null;
+                 throw new Exception("Password chua duoc dang ky"); ;
         }
         public async Task<List<UserViewModel>> GetAll()
         {
@@ -44,14 +49,16 @@ namespace FruitShopSolution.Application.Catalog.Users
                 UserViewModel user = new UserViewModel()
                 {
                     UserId = i.UserId,
-                    DateCreated = i.DateCreated,
+                    BirthDay = i.DateCreated,
                     Email = i.Email,
                     FristName = i.FristName,
                     LastLogin = i.LastLogin,
                     LastName = i.LastName,
                     Password = i.Password,
                     Phone = i.Phone,
-                    UserName = i.UserName
+                    UserName = i.UserName,
+                    Gender = i.Gender,
+                    Address = i.Address
                 };
                 listData.Add(user);
             }
@@ -66,18 +73,20 @@ namespace FruitShopSolution.Application.Catalog.Users
             return new UserViewModel()
             {
                 UserId = query.First().UserId,
-                DateCreated = query.First().DateCreated,
+                BirthDay = query.First().DateCreated,
                 Email = query.First().Email,
                 FristName = query.First().FristName,
                 LastLogin = query.First().LastLogin,
                 LastName = query.First().LastName,
                 Password = query.First().Password,
                 Phone = query.First().Phone,
-                UserName = query.First().UserName
+                UserName = query.First().UserName,
+                Gender = query.FirstOrDefault().Gender,
+                Address = query.FirstOrDefault().Address
             };
         }
 
-        public async Task<bool> Register(RegisterRequest registerRequest)
+        public async Task<int> Register(RegisterRequest registerRequest)
         {
             /*            var username = await _context.Users.FindAsync(registerRequest.UserName);
                         if (username != null) throw new Exception("User da duoc dang ky");
@@ -89,7 +98,6 @@ namespace FruitShopSolution.Application.Catalog.Users
             if (!String.IsNullOrEmpty(registerRequest.UserName))
             {
                 query = query.Where(u => u.UserName.Equals(registerRequest.UserName));
-                Console.WriteLine(query.Count());
             }
             if (query.Count() > 0) throw new Exception("User da duoc dang ky");
             var user = new User
@@ -100,13 +108,39 @@ namespace FruitShopSolution.Application.Catalog.Users
                 Email = registerRequest.Email,
                 DateCreated = DateTime.Now,
                 Password = registerRequest.Password,
-                UserName = registerRequest.UserName
-
+                UserName = registerRequest.UserName,
+                Gender = registerRequest.Gender,
+                BirthDay = registerRequest.BirthDay
             };
-            _context.Users.Add(user);
-            if (await _context.SaveChangesAsync() > 0)
-                return true;
-            return false;
+           await  _context.Users.AddAsync(user);
+            if (await _context.SaveChangesAsync() <= 0)
+                throw new Exception("Thêm không thành công");
+            return user.UserId;
+        }
+
+        public async Task<bool> Update(UpdateRequest request)
+        {
+            var user = await _context.Users.FindAsync(request.UserId);
+
+            if (user == null ) throw new Exception($"Cannot find a product with id: {request.UserId}");
+
+            user.FristName = request.FristName;
+            user.LastName = request.LastName;
+            user.BirthDay = request.BirthDay;
+            user.Email = request.Email;
+            user.Gender = request.Gender;
+            user.Phone = request.Phone;
+            if(await _context.SaveChangesAsync()<=0) throw new Exception("Cập nhật thất bại");
+            return true;
+        }
+        public async Task<bool> UpdatePass(UpdatePassRequest request)
+        {
+            var user = await _context.Users.FindAsync(request.UserId);
+
+            if (user == null ) throw new Exception($"Cannot find user with id: {request.UserId}");
+            user.Password = request.NewPass;
+            if(await _context.SaveChangesAsync()<=0) throw new Exception("Cập nhật thất bại");
+            return true;
         }
     }
 }

@@ -1,0 +1,133 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/CSS/style.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <title>TRÁI CÂY SẠCH - TNT FRUIT</title>
+</head>
+<body>
+
+    <!-- <div class="loader_bg">
+        <div class="loader"></div>
+    </div> -->
+    <!------ Loading page ------>
+    @*    <div class="loading-screen">
+            <div class="loading">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>*@
+
+    <div class="backgroundcolor">
+
+        <!------ Header ------>
+        
+        <!------ Body ------>
+        
+                        @RenderBody();
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- To top-->
+        <a rel="external" href="#" class="to-top">
+            <i class="fa fa-arrow-circle-up"></i>
+        </a>
+
+
+@*        <script src="../JAVASCRIPT/main.js"></script>*@
+
+        <!------ Footer ------>
+        <div id="footer" class="footer">
+            <div class="small-container">
+                <div class="row">
+                    <div class="footer-col-1">
+                        <h3>Tải ứng dụng của chúng tôi</h3>
+                        <p>Tải ứng dụng cho hệ điều hành Android và IOS</p>
+                        <div class="app-logo">
+                            <a href="https://play.google.com/store/apps" target="_blank"><img src="/Image/Logo/CHPlay.png"></a>
+                            <a href="https://www.apple.com/ios/app-store/" target="_blank"><img src="/Image/Logo/AppStore.png"></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col-2">
+                        <a class="btn btn-success" asp-action="index"> <img src="/Image/Logo/TNT_4.png"></a>
+                        <p>
+                            Mục đính của chúng tôi là mang đến cho bạn những sản phẩm trái cây tươi sạch, đạt tiêu chuẩn 3 không.
+                        </p>
+                    </div>
+
+                    <div class="footer-col-3">
+                        <h3>Cửa hàng phân phối</h3>
+                        <ul>
+                            <li>Thành phố Hồ Chí Minh</li>
+                            <li>Thành phố Hà Nội</li>
+                            <li>Thành phố Biên Hòa</li>
+                            <li>Tỉnh Đồng Nai</li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col-6">
+                        <h3>FAQ</h3>
+                        <p>
+                            Vận chuyển<br>
+                            Chính sách đổi trả<br>
+                            Chính sách bảo quản<br>
+                            Khách hàng VIP<br>
+                            Đối tác cung cấp<br>
+                        </p>
+                    </div>
+
+                    <div class="footer-col-5">
+                        <h3>Liên hệ với chúng tôi</h3>
+                        <p>
+                            <strong>Email:</strong><br>
+                            <a href="https://mail.google.com/mail/u/0/?tab=rm#inbox" target="_blank">namthangmu123@gmail.com</a>
+                            <br>
+                            <strong>Số điện thoại:</strong>
+                            <br>
+                            0961 600 587
+                        </p>
+                        <strong>
+                            <small>
+                                Đăng kí ngay để nhận những thông tin khuyến mãi!
+                            </small>
+                        </strong>
+                        </p>
+                        <form>
+                            <input type="email" placeholder="Email của bạn">
+                            <button type="submit"><strong>Subscribe</strong></button>
+                        </form>
+                    </div>
+
+                    <div class="footer-col-4">
+                        <h3>Theo dõi chúng tôi</h3>
+                        <ul>
+                            <li><a href="https://www.facebook.com/ThangUIT2018/" target="_blank"><i class="fa fa-facebook-square"><span> - Facebook</span></i></a></li>
+                            <li><a href="https://www.instagram.com/thang_uit/" target="_blank"><i class="fa fa-instagram"><span> - Instagram</span></i></a></li>
+                            <li><a href="https://twitter.com/ChuNamThng1" target="_blank"><i class="fa fa-twitter"><span> - Twitter</span></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCqRIlPMyax3ReAyzMr4GXlg/featured?view_as=subscriber" target="_blank"><i class="fa fa-youtube-play"><span> - Youtube</span></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <p class="copyright">&copy Copyright 2020 - Trái cây sạch TNT FRUIT</p>
+            </div>
+        </div>
+    </div>
+</body>
+@RenderSection("Scripts", required: false)
+</html>

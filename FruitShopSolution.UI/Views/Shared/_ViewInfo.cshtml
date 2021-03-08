@@ -1,0 +1,115 @@
+﻿@using FruitShopSolution.ViewModel.Catalog.Users;
+@using FruitShopSolution.ViewModel.Catalog.Products;
+@{
+    UserViewModel user = ViewData["UserLogin"] as UserViewModel;
+    int count = ViewBag.Count;
+}
+<div class="header">
+    <nav>
+        <div class="container">
+            <div class="logo">
+                <a href="@Url.Action("index", "home")"><img src="/Image/Logo/TNT_4.png"></a>
+            </div>
+            <div class="options">
+                <ul id="MenuItems">
+                    <li>
+                        <a href="@Url.Action("index", "home")">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ViewAll","Product")">Sản phẩm</a>
+                        <div class="sub-menu-1">
+                            <ul>
+                                <li class="hover-me">
+                                    <a href="#Featured">Trái cây nội</a> <i class="fa fa-angle-right"></i>
+                                    <div class="sub-menu-2">
+                                        <ul>
+                                            <li><a href="#">Trái cây miền Bắc</a></li>
+                                            <li><a href="#">Trái cây miền Trung</a></li>
+                                            <li><a href="#">Trái cây miền Nam</a></li>
+                                            <li><a href="#">Trái cây theo mùa</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="#">Trái cây ngoại nhập</a></li>
+                                <li><a href="#">Trái cây đóng hộp</a></li>
+                                <li><a href="#">Mâm quả trái cây</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="#">Khuyến mãi</a></li>
+                    <li><a href="#footer">Giới thiệu</a></li>
+                    <li><a href="#footer">Liện hệ</a></li>
+                </ul>
+            </div>
+            <div class="icon">
+                @{
+                    if (user.UserName != null)
+                    {
+                        <a rel="external" href="@Url.Action("viewinfo", "User")"><i class="fa fa-user-circle"></i></a>
+                    }
+                    else
+                    {
+                        <a rel="external" href="@Url.Action("Login", "User")"><i class="fa fa-user-circle"></i></a>
+                    }
+
+                    <a rel="external" href="#"><i class="fa fa-heart-o"></i></a>
+
+
+                }
+                @*                                                <?php
+                    $number_cart = 0;
+                    if(isset($_SESSION['cart']))
+                    {
+                    foreach($_SESSION['cart'] as $key => $value)
+                    {
+                    $number_cart++;
+                    }
+                    }
+                    ?>*@
+                @{
+
+                }
+                <a rel="external" href="@Url.RouteUrl("cart")"><i class="fa fa-shopping-cart"></i><span><small class="numbercart" id="numbercart">@count</small></span></a>
+                <a rel="external" onclick="Slide()"><i class="fa fa-search"></i></a>
+                <img src="/Image/Icons/menu.png" class="menu-icon" onclick="menutoggle()">
+            </div>
+        </div>
+    </nav>
+    <div class="search hide">
+        <div class="container-search">
+            <form action="/Search" method="post">
+                <input type="search" name="Search" placeholder="Ex: Thắng đẹp lắm" required> <input type="submit">
+            </form>
+            @*                    @using (Html.BeginForm("Index", "Search", FormMethod.Post)) // -- phần thay đổi
+                {
+                <p>
+                    Title: @Html.TextBox("Search") <input type="submit" value="Tìm kiếm" />
+                </p>
+                }*@
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var SearchBar = document.querySelector(".search");
+        function Slide() {
+            if (SearchBar.classList.contains("hide")) {
+                SearchBar.classList.remove("hide");
+            }
+            else {
+                SearchBar.classList.add("hide");
+            }
+        }
+
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "200px";
+            }
+            else {
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
+</div>

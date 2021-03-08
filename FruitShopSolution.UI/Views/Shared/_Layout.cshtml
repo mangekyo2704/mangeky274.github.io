@@ -1,4 +1,4 @@
-﻿
+﻿@model string;
 <!DOCTYPE html>
 <html>
 
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../CSS/style.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/style.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -32,16 +32,16 @@
     <div class="backgroundcolor">
 
         <!------ Header ------>
-        <div class="header">
+        <!--<div class="header">
             <nav>
                 <div class="container">
                     <div class="logo">
-                        <a href="@Url.Action("index","home")"><img src="/Image/Logo/TNT_4.png"></a>
+                        <a href="Url.Action("index", "home")"><img src="/Image/Logo/TNT_4.png"></a>
                     </div>
                     <div class="options">
                         <ul id="MenuItems">
                             <li>
-                                <a href="@Url.Action("index","home")">Trang chủ</a>
+                                <a href="Url.Action("index", "home")">Trang chủ</a>
                             </li>
                             <li>
                                 <a href="All_Product.php">Sản phẩm</a>
@@ -70,9 +70,12 @@
                         </ul>
                     </div>
                     <div class="icon">
-                        <a rel="external" href="#"><i class="fa fa-user-circle"></i></a>
+                        <a rel="external" href="Url.Action("Login", "User")"><i class="fa fa-user-circle"></i></a>
                         <a rel="external" href="#"><i class="fa fa-heart-o"></i></a>
-                        @*                        <?php
+                        @{
+
+                        }-->
+                        @*                                                <?php
                             $number_cart = 0;
                             if(isset($_SESSION['cart']))
                             {
@@ -82,10 +85,10 @@
                             }
                             }
                             ?>*@
-                        @{
-                            
+                        <!--@{
+
                         }
-                        <a rel="external" href="@Url.RouteUrl("cart")"><i class="fa fa-shopping-cart"></i><span><small class="numbercart" id="numbercart"></small></span></a>
+                        <a rel="external" href="Url.RouteUrl("cart")"><i class="fa fa-shopping-cart"></i><span><small class="numbercart" id="numbercart">@Model</small></span></a>
                         <a rel="external" onclick="Slide()"><i class="fa fa-search"></i></a>
                         <img src="/Image/Icons/menu.png" class="menu-icon" onclick="menutoggle()">
                     </div>
@@ -93,10 +96,16 @@
             </nav>
             <div class="search hide">
                 <div class="container-search">
-                    <form asp-action="Index" asp-controller="Search" method="post" runat="server">
-                        <input type="search" name="Search" placeholder="Ex: Thắng đẹp lắm" required> <input type="submit" value="Search" runnat="server">
-                    </form>
-                </div>
+                    <form action="/Search" method="post">
+                        <input type="search" name="Search" placeholder="Ex: Thắng đẹp lắm" required> <input type="submit">
+                    </form>-->
+                    @*                    @using (Html.BeginForm("Index", "Search", FormMethod.Post)) // -- phần thay đổi
+                        {
+                        <p>
+                            Title: @Html.TextBox("Search") <input type="submit" value="Tìm kiếm" />
+                        </p>
+                        }*@
+                <!--</div>
             </div>
 
 
@@ -122,7 +131,7 @@
                     }
                 }
             </script>
-        </div>
+        </div>-->
         <!------ Body ------>
         @RenderBody();
         <!------ Footer ------>
@@ -139,7 +148,7 @@
                     </div>
 
                     <div class="footer-col-2">
-                        <a class="btn btn-success" asp-action="index"> <img src="/Image/Logo/TNT_4.png"></a>
+                        <a class="" href="/"> <img src="/Image/Logo/TNT_4.png"></a>
                         <p>
                             Mục đính của chúng tôi là mang đến cho bạn những sản phẩm trái cây tươi sạch, đạt tiêu chuẩn 3 không.
                         </p>
@@ -204,5 +213,6 @@
         </div>
     </div>
 </body>
+
 @RenderSection("Scripts", required: false)
 </html>

@@ -1,0 +1,256 @@
+﻿@using FruitShopSolution.ViewModel.Catalog.Users;
+@{
+    Layout = "_LayoutProfile";
+    UserViewModel user = ViewBag.User;
+    ViewData["Title"] = "Sản Phẩm";
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h1><i class="fa fa-address-card-o"></i> &nbsp;TNT FRUIT</h1>
+        <ul>
+            <li class="choice"><a href="/"><i class="fa fa-home"></i> &nbsp;Thông Tin</a></li>
+            <li><a href="@Url.Action("ViewInfoUser")"><i class="fa fa-user"></i> &nbsp;Hồ Sơ</a></li>
+            <li class="choice" active><a href="/User/ViewOrder"><i class="fa fa-cart-arrow-down"></i> &nbsp;Tất Cả Đơn Hàng</a></li>
+            <li class="choice" active><a href="/User/OrderInprocess"><i class="fa fa-spinner fa-2x"></i> &nbsp;Đơn hàng chờ xác nhận</a></li>
+            <li class="choice" active><a href="/User/OrderWaitingGetProduct"><i class="fa fa-tasks fa-2x"></i> &nbsp;Đơn hàng chờ lấy hàng</a></li>
+            <li class="choice" active><a href="/User/OrderShipping"><i class="fa fa-tasks fa-2x"></i> &nbsp;Đơn hàng đang giao</a></li>
+            <li class="choice" active><a href="/User/OrderSuccess"><i class="fa fa-tasks fa-2x"></i> &nbsp;Đơn hàng hoàn thành</a></li>
+            <li class="choice" active><a href="/User/OrderCancel"><i class="fa fa-check-circle fa-2x"></i> &nbsp;Đơn hàng bị huỷ</a></li>
+            <li><a href="@Url.Action("Logout","User")" style="font-weight: bolder"><i class="fa fa-sign-out"></i> &nbsp;Đăng Xuất</a></li>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </ul>
+        <!-- <div class="social_media">
+            <a href="#"><i class="fa fa-facebook-f"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+        </div> -->
+    </div>
+
+
+    <div class="main_content">
+        <div class="header-1">
+            <h3>Chào @user.LastName, chúc bạn một ngày mới tốt lành nhé!  &nbsp;<i class="fa fa-smile-o"></i></h3>
+            <span class="Time" id="Time">
+                <i class="fa fa-calendar"></i> &nbsp;
+                @* <?php
+                    $date = getdate();
+                    $thu = array
+                    (
+                    "Monday" => "Thứ 2",
+                    "Tuesday" => "Thứ 3",
+                    "Wednesday" => "Thứ 4",
+                    "Thursday" => "Thứ 5",
+                    "Friday" => "Thứ 6",
+                    "Saturday" => "Thứ 7",
+                    "Sunday" => "Chủ Nhật"
+                    );
+                    $thutrongtuan = $date['weekday'];
+                    echo $thu[$thutrongtuan] . ", ngày " . $date['mday'] . ", tháng " . $date['mon'] . ", năm " . $date['year'];
+                    ?>*@
+                @DateTime.Now
+            </span>
+        </div>
+
+
+        <div class="info">
+            @*                   <div class="content">
+            <?php
+            if($action == 'info')
+            {
+            include './Profile_Functions/Profile_Info.php';
+            }
+            else if($action == 'user')
+            {
+            include './Profile_Functions/Profile_User.php';
+            }
+            else if($action == 'order')
+            {
+            include './Profile_Functions/Profile_Order.php';
+            }
+            else if($action == 'history')
+            {
+            include './Profile_Functions/Profile_History.php';
+            }
+            else
+            {
+            include './Profile_Functions/Profile_Info.php';
+            }
+            ?>
+        </div>*@
+            <div class="pf-user">
+                <form action="" method="POST">
+                    <h1>Thông Tin Của Bạn</h1>
+                    <br>
+                    <div id="load_form">
+                        <h3><i class="fa fa-user"></i> &nbsp;Họ và tên đệm</h3>
+                        <input type="text" class="input-pf" name="FristName" id="FristName" value="@user.FristName" placeholder="Ex: Nguyễn Thị" maxlength="100" required>
+                        <h3><i class="fa fa-user"></i> &nbsp;Tên</h3>
+                        <input type="text" class="input-pf" name="LastName" id="LastName" value="@user.LastName" placeholder="Ex: A" maxlength="100" required>
+
+                        <h3><i class="fa fa-venus-mars"></i> &nbsp;Giới tính</h3>
+                        <div class="input-gender">
+                            @{
+                                string gender1 = "";
+                                string gender2 = "";
+                                try
+                                {
+                                    gender1 = user.Gender.Equals("Nam") ? "checked" : "";
+                                    gender2 = user.Gender.Equals("Nữ") ? "checked" : "";
+
+                                }
+                                catch (NullReferenceException)
+                                {
+                                    gender1 = "checked";
+                                }
+
+
+
+                            }
+                            <input type="radio" name="Cus_Gender" value="Nam" @gender1 required> <span> Nam</span> &nbsp; &nbsp; &nbsp;
+                            <input type="radio" name="Cus_Gender" value="Nữ" @gender2 required> <span> Nữ</span>
+                        </div>
+                        <h3><i class="fa fa-birthday-cake"></i> &nbsp;Ngày sinh</h3>
+                        <input type="date" class="input-pf" name="Cus_BDay" id="birthday" value="@user.BirthDay.ToString("yyyy-MM-dd")" min="1850-01-01" required>
+
+                        <h3><i class="fa fa-phone"></i> &nbsp;Số điện thoại</h3>
+                        <input type="tel" class="input-pf" name="Cus_Phone" id="tel" value="@user.Phone" placeholder="Ex: 0961234567" maxlength="15" required>
+
+                        <h3><i class="fa fa-envelope"></i> &nbsp;Email</h3>
+                        <input type="email" class="input-pf" name="Cus_Email" id="email" value="@user.Email" placeholder="Ex: abc123@gmail.com" maxlength="100" required>
+
+                        <h3><i class="fa fa-address-card"></i> &nbsp;Địa chỉ nhận hàng</h3>
+                        <textarea class="input-pf" style="resize: vertical;" name="Cus_Address" id="address" placeholder="Ex: Cho bố mày cái địa chỉ" maxlength="500" required></textarea>
+                    </div>
+                    <a id="open-popup-btn" class="btn-update" onclick="Update()">Cập Nhật Thông Tin</a>
+                    <h1>Thay đổi mật khẩu</h1>
+                    <div id="load_form_change_password">
+                        <h3><i class="fa fa-lock"></i> &nbsp;Nhập mật khẩu hiện tại</h3>
+                        <input type="password" class="input-pf" name="FristName" id="oldpass" value="" placeholder="Mật khẩu hiện tại" required>
+                        <h3><i class="fa fa-lock"></i> &nbsp;Nhập mật khẩu mới</h3>
+                        <input type="password" class="input-pf" name="LastName" id="newpass" value="" placeholder="Nhập mật khẩu mới"  required>
+                        <h3><i class="fa fa-lock"></i> &nbsp;Nhập lại mật khẩu mới</h3>
+                        <input type="password" class="input-pf" name="LastName" id="newpassagain" value="" placeholder="Nhập lại mật khẩu mới" required>
+                         
+                    </div>
+                    <h3 id="notify"></h3>
+                    <a id="open-popup-btn" class="btn-update" onclick="UpdatePass()">Cập Nhật</a>
+
+                </form>
+            </div>
+
+
+            <!----------------- Popup, Modal ----------------->
+            <div class="popup center">
+                <div class="icon">
+                    <i class="fa fa-check"></i>
+                </div>
+
+                <div class="title-1" id="notify">
+
+                </div>
+
+                <!-- <div class="description">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias nihil provident voluptatem nulla placeat
+        </div> -->
+                <br>
+                <div class="dismiss-btn">
+                    <button id="dismiss-popup-btn">OK</button>
+                </div>
+            </div>
+
+
+
+
+
+
+            <script type="text/javascript">
+    function Update() {
+        $.ajax
+            ({
+                url: "@Url.Action("UpdateInfoUser")", // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là post
+                dateType: "text", // dữ liệu trả về dạng text
+                data:
+                    {
+                        id: @user.UserId,
+                        firstname: $("#FristName").val(),
+                        lastname: $("#LastName").val(),
+                        email: $("#email").val(),
+                        phone: $("#tel").val(),
+                        gender: $('[name="Cus_Gender"]:radio:checked').val(),
+                        birthday: $("#birthday").val()
+                    },
+                 success: function(result) {
+                        $("#notify").text(result);
+                        $("#load_form").load("@Url.Action("ViewInfoUser") #load_form");
+                 }
+            });
+    };
+
+     function UpdatePass() {
+@*                    if ($('#oldpass').val() != @user.Password) {
+                        var string = location.href + " #load_form_change_password"
+                        $('#load_form_change_password').load(string);
+                    }*@
+         var oldpass = $('#oldpass').val();
+         var newpass = $('#newpass').val();
+         var newpassagain = $('#newpassagain').val();
+         console.log(oldpass, newpass, newpassagain);
+        $.ajax
+            ({
+                url: "@Url.Action("UpdatePass")", // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là post
+                dateType: "text", // dữ liệu trả về dạng text
+                data:
+                    {
+                    oldpass: oldpass,
+                    newpass: newpass,
+                    newpassagain: newpassagain,
+                        id:@user.UserId,
+                    },
+                 success: function(result) {
+                     document.getElementById('notify').innerHTML = result;
+                     console.log(result);
+                     $("#load_form_change_password").load("@Url.Action("ViewInfoUser") #load_form_change_password");
+                 }
+            });
+    }
+
+    document.getElementById("open-popup-btn").addEventListener("click", function () {
+        document.getElementsByClassName("popup")[0].classList.add("active");
+    });
+
+    document.getElementById("dismiss-popup-btn").addEventListener("click", function () {
+        document.getElementsByClassName("popup")[0].classList.remove("active");
+    });
+            </script>
+
+        </div>
+    </div>
+</div>
+
+
+
+

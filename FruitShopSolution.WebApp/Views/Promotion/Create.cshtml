@@ -1,0 +1,289 @@
+﻿@using FruitShopSolution.ViewModel.Catalog.Categories ;
+@using FruitShopSolution.ViewModel.Catalog.Products ;
+@{
+    ViewData["Title"] = "Tạo mới sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<CategoriesViewModel> categories = ViewBag.Categories;
+    List<ProductInfoViewModel> products = ViewBag.Products;
+
+}
+<div class="container-fluid">
+    <h1 class="mt-4">Tạo mới khuyến mãi</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Tạo mới khuyến mãi</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Promotion">Về danh sách</a>
+        </div>
+
+        <div class="card-body" id="bodydata">
+            <div class="col-md-8">
+                <form>
+                    <div class="form-group">
+                        <label class="control-label">Tên khuyến mãi</label>
+                        <input id="Title" class="form-control" placeholder="Ví dụ:Chương trình khuyến mãi tháng 4" on />
+                        <span id="titlemsg" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nội dung khuyến mãi</label>
+                        <input id="Content" class="form-control" type="text" />
+                        <span id="contentmsg" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">% Khuyến mãi</label>
+                        <input id="DiscountPercent" type="number" class="form-control" typeof="number" />
+                        <span id="discountpercentmsg" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Thời điẻm bắt đầu</label>
+                        <input id="FromDate" class="form-control" type="date" />
+                        <span id="fromdatemsg" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Thời điểm kết thúc</label>
+                        <input id="ToDate" class="form-control" type="date" />
+                        <span id="todatemsg" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label id="apdung" class="control-label">Áp dụng với</label>
+                        <div id="selectradio" style=" border: 1px solid #cdcdcd">
+                            <style>
+                                #apdung {
+                                    margin-left: 10px;
+                                    margin-top: 10px;
+                                }
+                            </style>
+                            <input id="apdung" type="radio" onclick="Show(1)" name="apdung" value="1" />Tất cả sản phẩm<br />
+                            <input id="apdung" onclick="Show(2)" type="radio" name="apdung" value="2" />Danh mục sản phẩm<br />
+                            <input id="apdung" onclick="Show(3)" type="radio" name="apdung" value="3" />Sản phẩm
+                        </div>
+                        <div class="form-group" id="category" style="display:none">
+                            <br />
+                            <label id="ToDate" class="control-label">Chọn Danh mục</label>
+                            <div style="border: 1px solid #cdcdcd;">
+                                <style>
+                                    #checkboxselected {
+                                        margin-left: 10px;
+                                        margin-top: 10px;
+                                    }
+                                </style>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    foreach (var i in categories)
+                                    {
+                                        <input type="checkbox" value="@i.CategoryId" id="checkboxselected" />@i.Title
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group" id="productdata" style="display:none">
+                            <br />
+                            <label id="ToDate" class="control-label">Chọn Sản phẩm</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Chọn
+                                        </th>
+                                        <th>
+                                            Mã SP
+                                        </th>
+                                        <th>
+                                            Tên
+                                        </th>
+                                        <th>
+                                            Xuất xứ
+                                        </th>
+                                        <th>
+                                            Số lượng tồn
+                                        </th>
+                                        <th>
+                                            Giá nhập
+                                        </th>
+
+                                        <th>
+                                            Giá bán
+                                        </th>
+                                        <th>
+                                            Ngày nhập
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in products)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" value="@item.pro.ProductId" id="productId" />
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.ProductId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.Title)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.Origin)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.Quantity)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.InputCount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.OutputCount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.pro.DateCreated)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <span id="ToDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    </div>
+                </form>
+                <button id="btnsubmit" onclick="CreatePromotion()" class="btn btn-primary">Tạo khuyến mãi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function Show(id) {
+            var x = document.getElementById("category");
+            var y = document.getElementById("productdata");
+            if (id == 2) {
+                x.style.display = "block";
+                y.style.display = "none";
+            } else if (id == 3) {
+                x.style.display = "none";
+                y.style.display = "block";
+            } else {
+                x.style.display = "none";
+                y.style.display = "none";
+            }
+        };
+
+        Date.prototype.isValid = function () {
+            console.log("da vao isvalid");
+            return this.getTime() === this.getTime();
+        };
+
+        function Validate() {
+            console.log("da vao vaildation")
+            var check = 1;
+            if ($('#Title').val() == "") {
+                $('span#titlemsg').text("Tên không được để trống!")
+                check = 0;
+            }
+            if ($('#Content').val() == "") {
+                $('span#titlemsg').text("Không được để trống!")
+                check = 0;
+            }
+            if ($('#DiscountPercent').val() == "") {
+                $('span#discountpercentmsg').text("Không được để trống!")
+                check = 0;
+            }
+            if ($('#DiscountPercent').val() < 0) {
+                $('span#discountpercentmsg').text("Giá trị không hợp lệ")
+                check = 0;
+            }
+            var fromdate = new Date($('#FromDate').val());
+            var todate = new Date($('#ToDate').val());
+            console.log(fromdate);
+            if (!fromdate.isValid()) {
+                $('span#fromdatemsg').text("Vui lòng chọn ngày tháng!")
+                check = 0;
+            }
+            if (!todate.isValid()) {
+                $('span#todatemsg').text("Vui lòng chọn ngày tháng!")
+                check = 0;
+            }
+            if (fromdate > todate) {
+                $('span#fromdatemsg').text("Ngày bắt đầu không được nhỏ hơn ngày kết thúc!")
+                check = 0;
+            }
+            if (todate < Date.now()) {
+                $('span#todatemsg').text("Ngày kết thúc không được nhỏ hơn ngày hôm nay!")
+                check = 0;
+            }
+            if (fromdate < Date.now()) {
+                $('span#fromdatemsg').text("Ngày bắt đầu không được nhỏ hơn hôm nay!")
+                check = 0;
+            }
+            console.log(check);
+            return check;
+        };
+
+
+        function CreatePromotion() {
+            console.log("da vao create");
+            if (Validate() == 1) {
+
+                console.log("ok");
+                var choose = $('#apdung:checked').val();
+                var Title1 = $('#Title').val();
+                var Content1 = $('#Content').val();
+                var DiscountdPercent1 = $('#DiscountPercent').val();
+                console.log(DiscountdPercent1);
+                let listcategoryId = [''];
+                $('#checkboxselected:checked').each(function () {
+                    listcategoryId.push(this.value);
+                });
+                let listproduct = [''];
+                $('#productId:checked').each(function () {
+                    listproduct.push(this.value);
+                });
+                console.log(choose, Title, DiscountPercent);
+                var Content1 = $('#Content').val();
+                var date = new Date($('#FromDate').val());
+                day = date.getDate();
+                month = date.getMonth() + 1;
+                year = date.getFullYear();
+                var string1 = [day, month, year].join('/');
+                var date2 = new Date($('#ToDate').val());
+                day = date2.getDate();
+                month = date2.getMonth() + 1;
+                year = date2.getFullYear();
+                var string2 = [day, month, year].join('/');
+                console.log("toi cuoi");
+                $.ajax
+                    ({
+                        url: '@Url.ActionLink("CreatePromotion")', // gửi ajax đến file
+                        type: "post", // chọn phương thức gửi là get
+                        data:
+                        {
+                            choose: choose,
+                            Title: Title1,
+                            DiscountPercent: DiscountdPercent1,
+                            FromDate: string1,
+                            ToDate: string2,
+                            Content: Content1,
+                            categoryId: listcategoryId,
+                            productIds: listproduct
+                        },
+                        success: function (result) {
+                            console.log(result);
+                            window.location = '/Promotion/Index';
+                            
+                        },
+                        error: function (result) {
+                            $('#msgAlert').text("Đơn hàng xác nhận không thành công!");
+                        }
+                    });
+            }
+        };
+    </script>
+
+}
+
+

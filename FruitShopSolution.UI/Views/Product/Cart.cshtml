@@ -1,6 +1,12 @@
 ﻿@model List<FruitShopSolution.ViewModel.Catalog.Cart.CartViewModel>
 <h2>GIỎ HÀNG</h2>
-
+@using FruitShopSolution.ViewModel.Catalog.Users;
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+    UserViewModel user = ViewBag.User;
+    int count = ViewBag.ProductsCount;
+}
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
 @if (Model.Count > 0)
 {
     decimal total = 0;
@@ -81,7 +87,7 @@
                             quantity: quantity
                         },
                         success: function (result) {
-                            $("#listcart").load("Cart.php #listcart");
+                            $("#listcart").load(" #listcart");
                         }
                     });
             }

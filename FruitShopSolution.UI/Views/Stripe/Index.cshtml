@@ -1,0 +1,22 @@
+﻿@using Microsoft.Extensions.Options;
+@inject IOptions<FruitShopSolution.UI.Stripe.StripeSetting> Stripe;
+@{ 
+
+}
+<div class="text-center">
+    <form  asp-action="Charge" asp-controller="Stripe">
+        <article>
+            <label>amount :</label>
+
+        </article>
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="@Stripe.Value.PublishableKey"
+                data-amount="50000"
+                data-name="THANH TOÁN "
+                data-description="conchotuanancut"
+                data-image="https://portal.uit.edu.vn/Styles/profi/images/logo186x150.png"
+                data-currency="vnd"
+                data-email="vnnguyenhuutai2000@gmail.com">
+        </script>
+    </form>
+</div>

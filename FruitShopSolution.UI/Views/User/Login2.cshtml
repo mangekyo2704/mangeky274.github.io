@@ -1,0 +1,224 @@
+﻿@model FruitShopSolution.ViewModel.Catalog.Users.LoginRequest;
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+        <script src="~/js/main.js"></script>
+        <!------ Login page ------>
+        <div class="account-page">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-2">
+                        <img src="/Image/Ảnh bìa/Traicay.png">
+                        <h3>Đăng nhập để có thể bình luận<br>và nhận nhiều thông tin khuyến mãi HOT. </h3>
+                    </div>
+
+                    <div class="col-2 form-main">
+                        <div class="form-container" id="form-load">
+
+                            <div class="form-btn">
+                                <span id="title-login" class="title-login" onclick="login()"><i class="fa fa-user"></i> Đăng Nhập</span>
+                                <span id="title-register" class="title-register" style="color: rgb(255, 0, 0);" onclick="register()"><i class="fa fa-pencil-square"></i> Đăng Ký</span>
+                                <hr id="Indicator">
+                            </div>
+
+                            <form id="LoginForm" asp-action="login2" method="POST">
+                                <h1>ĐĂNG NHẬP</h1>
+                                <br>
+                                <i class="fa fa-user"></i> &nbsp;<strong>Tài khoản</strong>
+                                <input type="text" class="input-login" asp-for="UserName" name="Acc_Username" placeholder="Ex: thangdeplam" maxlength="100" autocomplete="off" autofocus required>
+
+
+                                <i class="fa fa-lock"></i> &nbsp;<strong>Mật khẩu</strong>
+                                <input type="password" class="input-login" asp-for="Password" name="Acc_Password" id="password" placeholder="Password" maxlength="100" autocomplete="off" required>
+                                <i class="password-toggle fa fa-eye-slash" id="password-toggle" onclick="Password_Toggle()"></i>
+
+                                @*<input type="checkbox" style="cursor: pointer;" <?= ($check) ? "checked" : "" ?> name="remember" value="1"> &nbsp;Nhớ tài khoản*@
+
+                                <input type="submit" class="btn" name="login" value="Đăng Nhập">
+
+                                <div class="forgot-pass">
+                                    <a href="">Quên mật khẩu</a>
+                                </div>
+
+                                <br>
+                                <br>
+
+                                <h1>OR</h1>
+
+                                <div style="text-align: center;">
+                                    <a class="btn-facebook" href=""><i class="fa fa-facebook"></i> &nbsp;Login with Facebook</a>
+                                    <a class="btn-google" href=""><i class="fa fa-google-plus"></i> &nbsp;Login with Google</a>
+                                    <a class="btn-zalo" href="">Login with Zalo</a>
+                                </div>
+
+                            </form>
+
+
+
+
+
+                            <!--<form id="RegForm" method="POST">
+                                <div style="text-align: center;">
+                                    <h1>ĐĂNG KÝ</h1>
+                                </div>
+                                <br>
+                                <p style="font-size: 15px;"><i class="fa fa-exclamation-triangle"></i> Vui lòng điền đầy đủ thông tin dưới đây!</p>
+                                <br>
+
+
+                                <i class="fa fa-user"></i> &nbsp; <strong>Họ và tên</strong>
+                                <input type="text" class="input-login" name="Cus_Name" id="name" value="" placeholder="Ex: Nguyễn Thị A" maxlength="100" required>
+                                <br>
+
+                                <i class="fa fa-transgender"></i> &nbsp;<strong>Giới tính</strong>
+                                <div>
+                                    <input type="radio" name="Cus_Gender" value="1" required> <span> Nam</span><br>
+                                    <input type="radio" name="Cus_Gender" value="0" required> <span> Nữ</span>
+                                </div>
+                                <br>
+
+                                <i class="fa fa-birthday-cake"></i> &nbsp;<strong>Ngày sinh</strong>
+                                <input type="date" class="input-login" name="Cus_BDay" id="birthday" value="" min="1850-01-01" required>
+                                <br>
+
+                                <i class="fa fa-phone"></i> &nbsp;<strong>Số điện thoại</strong>
+                                <input type="tel" class="input-login" name="Cus_Phone" id="tel" value="" placeholder="Ex: 0961234567" maxlength="15" required>
+                                <br>
+
+                                <i class="fa fa-envelope"></i> &nbsp;<strong>Email</strong>
+                                <input type="email" class="input-login" name="Cus_Email" id="email" value="" placeholder="Ex: abc123@gmail.com" maxlength="100" required>
+                                <br>
+
+                                <i class="fa fa-address-card"></i> &nbsp;<strong>Địa chỉ (địa chỉ giao hàng)</strong>
+                                <textarea class="input-login" style="resize: none; height: 150px;" name="Cus_Address" id="address" value="" placeholder="Ex: Cho bố mày cái địa chỉ" maxlength="500" required></textarea>
+                                <br>
+
+                                <i class="fa fa-user"></i> &nbsp;<strong>Tên tài khoản</strong>
+                                <input type="text" class="input-login" name="Acc_Username" id="username" placeholder="Ex: thangdeplam" maxlength="100" autocomplete="off" required>
+                                <br>
+
+                                <i class="fa fa-lock"></i> &nbsp;<strong>Mật khẩu</strong>
+                                <input type="password" class="input-login" name="Acc_Password" id="password" placeholder="Password" maxlength="100" autocomplete="off" required>
+                                <br>
+
+                                <i class="fa fa-lock"></i> &nbsp;<strong>Nhập lại mật khẩu</strong>
+                                <input type="password" class="input-login" name="Password" id="repassword" placeholder="Password" maxlength="100" autocomplete="off" required>
+                                <small id="repass" style="color: red;"></small>-->
+
+                                <!-- <div style="text-align: center;">
+                                    <a class="btn" id="register">TẠO TÀI KHOẢN</a>
+                                </div>-->
+
+                                <!--<input type="submit" class="btn" name="register" value="TẠO TÀI KHOẢN">
+
+                                <small style="color: red;" id="notify">
+                                    @ViewBag.Exception
+                                </small>
+
+
+
+                            </form>-->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- To top-->
+        <a rel="external" href="#" class="to-top">
+            <i class="fa fa-arrow-circle-up"></i>
+        </a>
+
+
+    <script>
+
+        // Javascript for Login page
+        var LoginForm = document.getElementById("LoginForm");
+        var RegForm = document.getElementById("RegForm");
+        var Indicator = document.getElementById("Indicator");
+        var titlelogin = document.getElementById("title-login");
+        var titleregister = document.getElementById("title-register");
+
+        function register() {
+            RegForm.style.transform = "translateX(0px)";
+            LoginForm.style.transform = "translateX(0px)";
+            Indicator.style.transform = "translateX(231px)";
+            titleregister.style.color = "rgb(255, 0, 0)";
+            titlelogin.style.color = "#555";
+        }
+
+        function login() {
+            RegForm.style.transform = "translateX(400px)";
+            LoginForm.style.transform = "translateX(400px)";
+            Indicator.style.transform = "translateX(18px)";
+            titlelogin.style.color = "rgb(0, 110, 255)";
+            titleregister.style.color = "#555";
+        }
+
+
+
+        // Javascript for SHOW and HIDE Password
+        var password = document.getElementById("password");
+        var passwordtoggle = document.getElementById("password-toggle");
+        function Password_Toggle() {
+            if (password.type === 'password') {
+                password.type = 'text';
+                passwordtoggle.classList.remove('fa-eye-slash');
+                passwordtoggle.classList.add('fa-eye');
+            }
+            else {
+                password.type = 'password';
+                passwordtoggle.classList.remove('fa-eye');
+                passwordtoggle.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#repassword").on('change keyup paste', function () {
+                var password = $("#password").val();
+                var repassword = $("#repassword").val();
+
+                if (repassword != password) {
+                    $("#repass").html('');
+                    // return false;
+                }
+                else {
+                    $("#repass").html('Mật khẩu chưa khớp');
+                    // return true;
+                }
+            });
+
+            // $("#register").click(function()
+            // {
+            //     $.ajax
+            //     ({
+            //         url: "Register_Process.php", // gửi ajax đến file
+            //         type: "post", // chọn phương thức gửi là get
+            //         dateType: "text", // dữ liệu trả về dạng text
+            //         data:
+            //         {
+            //             Cus_Name: $("#name").val(),
+            //             Cus_BDay: $("#birthday").val(),
+            //             Cus_Gender: $('[name="Cus_Gender"]:radio:checked').val(),
+            //             Cus_Address: $("#address").val(),
+            //             Cus_Email: $("#email").val(),
+            //             Cus_Phone: $("#tel").val(),
+            //             Acc_Username: $("#username").val(),
+            //             Acc_Password: $("#password").val(),
+            //             Re_Password: $("#repassword").val(),
+            //         },
+            //         success: function (result)
+            //         {
+            //             $("#form-load").load("Login.php #form-load");
+            //             $("#notify").text(result);
+            //         }
+            //     });
+            // });
+        });
+    </script>
+

@@ -1,0 +1,139 @@
+﻿
+
+@using FruitShopSolution.ViewModel.Catalog.Products;
+@model List<ProductInfoViewModel>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="" name="keyword" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="promotionId" onchange="this.form.submit()" class="form-control" asp-items="@ViewBag.Promotions">
+                                    <option>--Chọn danh mục--</option>
+                                </select>
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Promotion/ProductInPromotion'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chọn
+                            </th>
+                            <th>
+                                Mã SP
+                            </th>
+                            <th>
+                                Tên
+                            </th>
+                            <th>
+                                Xuất xứ
+                            </th>
+                            <th>
+                                Số lượng tồn
+                            </th>
+                            <th>
+                                Giá nhập
+                            </th>
+
+                            <th>
+                                Giá bán
+                            </th>
+                            <th>
+                                Ngày nhập
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@item.pro.ProductId"/>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.ProductId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.Origin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.InputCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.OutputCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pro.DateCreated)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Update(id) {
+        $.ajax
+            ({
+                url: '@Url.Action("Comfirm")', // gửi ajax đến file
+                type: "post", // chọn phương thức gửi là get
+                data:
+                {
+                    orderId: id
+
+                },
+                success: function (result) {
+
+                    $("#card-body").load("@Url.Action("Index") #card-body");
+                },
+                error: function (result) {
+                    alert(result);
+                }
+            });
+    };
+</script>
+

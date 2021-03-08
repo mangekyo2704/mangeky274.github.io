@@ -1,0 +1,220 @@
+﻿
+@model FruitShopSolution.ViewModel.Catalog.Users.RegisterRequest;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login FruitShop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="/Image/Icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="/image/img-01.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form" asp-action="Register" asp-controller="User" method="post">
+                    <span class="login100-form-title">
+                        Register
+                    </span>
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="FristName" type="text" class="input100" placeholder="Họ và tên đệm">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="LastName" type="text" class="input100" placeholder="Tên">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <style>
+                        #genderselect {
+                            font-family: Poppins-Medium;
+                            font-size: 15px;
+                            line-height: 1.5;
+                            color: #666666;
+                            display: block;
+                            width: 100%;
+                            background: #e6e6e6;
+                            height: 50px;
+                            border-radius: 25px;
+                            padding: 0 30px 0 68px;
+                        }
+
+                        div#RegForm {
+                            padding-top: 17px;
+                        }
+                    </style>
+                    <div class="wrap-input100 validate-input" id="genderselect">
+                        @*<input asp-for="Gender" type="text"  placeholder="Giới tính">*@
+                        <div id="RegForm">
+                            <i class="fa fa-male" aria-hidden="true"></i>
+                            <input type="radio" value="Nam" id="Gender" name="Gender" required> <span> Nam</span> &nbsp; &nbsp; &nbsp;
+                            <i class="fa fa-female" aria-hidden="true"></i>
+                            <input type="radio" value="Nữ" id="Gender" name="Gender" required> <span> Nữ</span>
+                        </div>
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-genderless" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="Email" type="email" class="input100" placeholder="Email">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="Phone" type="text" class="input100" placeholder="SĐT">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-mobile-phone" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="BirthDay" type="date" class="input100" placeholder="Ngày Sinh">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-birthday-cake" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="wrap-input100 validate-input">
+                        <style>
+
+                            textarea.input100 {
+                                height: 200px;
+                                padding-top: 15px;
+                            }
+                        </style>
+                        <textarea asp-for="Address" type="date" class="input100" placeholder="Địa chỉ" rows="20"></textarea>
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-address-book" aria-hidden="true" style="margin-bottom:150px;"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="UserName" type="text" class="input100" placeholder="Tên Đăng Nhập">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-user-secret" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="password" placeholder="Mật khẩu" asp-for="Password">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+
+                    <div class="container-login100-form-btn">
+                        @{
+                            if (ViewBag.Exception != null)
+                            {
+                                <p class="txt2">@ViewBag.Exception</p>
+                            }
+                        }
+                        <button class="login100-form-btn">
+                            Đăng ký
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-12">
+                        <span class="txt1">
+                            Forgot
+                        </span>
+                        <a class="txt2" href="#">
+                            Username / Password?
+                        </a>
+                    </div>
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" href="#">
+                            Create your Account
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/bootstrap/js/popper.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+    @*<script src="/js/login.js"></script>*@
+
+</body>
+</html>
+@*<script type="text/javascript">
+            $('.validate-form').on('submit', function () {
+                // alert(id);
+                var user = $('#email').val();
+                var pass = $('#password').val();
+                $.ajax(
+                    {
+                        url: "@Url.RouteUrl("login")", // gửi ajax lên server
+                        type: "post", // chọn phương thức gửi là post
+                        dateType: "text", // dữ liệu trả về dạng text
+                        data:
+                        {
+                            usename: user,
+                            password: pass
+                        },
+                        success: function (result) {
+                            $(".validate-form").load("@Url.RouteUrl("login") .validate-form");
+                        }
+                    });
+            });
+    </script>*@

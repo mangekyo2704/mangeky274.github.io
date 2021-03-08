@@ -8,6 +8,10 @@ using Microsoft.Extensions.Logging;
 using FruitShopSolution.UI.Models;
 using FruitShopSolution.Data.EF;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using FruitShopSolution.ViewModel.Catalog.Users;
+using FruitShopSolution.Application.Catalog.Promotion;
 
 namespace FruitShopSolution.UI.Controllers
 {
@@ -16,6 +20,7 @@ namespace FruitShopSolution.UI.Controllers
         private readonly ILogger<HomeController> _logger;
         /*        private readonly IProductManageService _proService;*/
         private readonly IProductService _proService;
+        private readonly IPromotionService _promotionService;
         //private readonly IProductImageService _proImageService;
         //private readonly ICategoryService _categoryService;
         /*        public HomeController(IProductManageService proService)
@@ -23,40 +28,37 @@ namespace FruitShopSolution.UI.Controllers
         *//*            _proService = proService;*//*
                     // _proImageService = proImageService;
                 }*/
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        public HomeController(ILogger<HomeController> logger, IProductService productService,IPromotionService promotionService)
         {
             _logger = logger;
             _proService = productService;
+            _promotionService = promotionService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // List<ProductViewModel> listpro = await _proService.GetByCategory(1);
-            //List<ProductInfoViewModel> listproinfo = new List<ProductInfoViewModel>();
-            /*            foreach (var i in listpro)
-                        {
-                            List<ProductImageViewModel> listImages = await _proImageService.GetListProductImages(i.ProductId);
-                            listproinfo.Add(
-                                new ProductInfoViewModel()
-                                {
-                                    pro = i,
-                                    listImages = listImages
-                                });
+            var products = await _proService.GetAllProduct();
+            foreach(var i in products)
+            {
+                i.Discount = await _promotionService.GetPromotionOfProduct(i.pro.ProductId);
+            }
+            ViewBag.Product = products;
 
-                        }*/
-
-            ViewBag.Product = _proService.GetAllProduct();
-
+            ViewBag.User = new SessionService(HttpContext.Session).GetUserLogined();
+            ViewBag.ProductsCount = new SessionService(HttpContext.Session).GetCartItems().Count();
             return View();
         }
 
         public IActionResult Privacy()
         {
+            ViewBag.User = new SessionService(HttpContext.Session).GetUserLogined();
+            ViewBag.Products = new SessionService(HttpContext.Session).GetCartItems().Count();
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

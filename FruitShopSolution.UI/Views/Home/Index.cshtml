@@ -1,14 +1,16 @@
 ﻿@using FruitShopSolution.ViewModel.Catalog.Products;
+@using FruitShopSolution.ViewModel.Catalog.Users;
 @{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    UserViewModel user = ViewBag.User;
+    int count = ViewBag.ProductsCount;
 }
-
+@await Html.PartialAsync("_HeaderLayout", new ViewDataDictionary(ViewData) { { "UserLogin", user }, { "Count", count } })
 <div class="row">
     <div class="col-2">
         <h3>
-            Trái cây sạch - TNT FRUIT mang đến cho bạn<br>
-            những loại trái cây ngon, sạch và chất lượng nhất Việt Nam!
+            Trái cây sạch - TNT FRUIT mang đến cho bạn những loại trái cây ngon, sạch và chất lượng nhất Việt Nam!<br>
         </h3>
         <a href="#Featured" class="btn"><span></span>Mua sắm nào &#8594;</a>
     </div>
@@ -29,53 +31,90 @@
 <!------ Featured products ------>
 <div class="small-container">
     <h1 id="Featured" class="title">Trái Cây Nội</h1>
-    <div class="row">
-        <!--<?php
-        while ($row = $Product->fetch_array())
-        {
-        ?>
-        <div class="col-4 add-border">
-            <a href="Product_detail.php?id=<?= $row['Pro_ID'] ?>">
-                <img src="<?= $row['Pro_Img'] ?>">
-                <h3><?= $row['Pro_Name'] ?></h3>
-                <div class="rating">
-                    <?php
-                    Rating_Stars($row['Pro_Rate']);
-                    ?>
-                </div>
-                <p><?= number_format($row['Pro_Price'], 0, ",", ".") ?> VNĐ/1kg</p>-->
-        <!-- <span><a href="?ID=<?= $row['Pro_ID'] ?>"><i class="fa fa-cart-plus"></i></a></span>                                      -->
-        <!--</a>
-        </div>
-        <?php
-        }
-        ?>-->
+    <div class="row" style="justify-content:center">
+
         @{
             string url = "https://localhost:5001/Product/ViewDetail?";
-        
+
             foreach (ProductInfoViewModel i in ViewBag.Product)
             {
                 // List<ProductImageViewModel> listImages =await Model.GetProductImages(i.ProductId);
-
-                <div class="col-4 add-border">
-                    @{
-                        string link =url + $"proId={i.pro.ProductId}";
-                    }
-                    <a href="@link">
-                        @if (i.ListImages.Count() > 0)
-                        {
-                            ;
-                            <img src="@i.ListImages[0].imagepath">
+                if (i.Categories.Select(x => x.CategoryId).Contains(2))
+                {
+                    <div class="col-4 add-border">
+                        @{
+                            string link = url + $"proId={i.pro.ProductId}";
                         }
-                        <h3>@i.pro.Title</h3>
-                        <div class="rating">
-                        </div>
-                        <p>@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/1kg</p>
-                </div>
+                        <a href="@link">
+                            @if (i.ListImages.Count() > 0)
+                            {
+                                <img src="@i.ListImages[0].imagepath" style="height:168px">
+                            }
+                            <h3>@i.pro.Title</h3>
+                            <div class="rating">
+                                @Rating_Stars(5)
+                            </div>
+
+                            @{
+                                if (i.Discount != 100 && i.Discount != 0)
+                                {
+                                    <p style="text-decoration: line-through;">@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/@i.pro.Unit</p>
+                                    <p>@Convert.ToDecimal(i.pro.OutputCount * (1 - (decimal)i.Discount / 100)).ToString("#,##0") VNĐ/@i.pro.Unit</p>
+                                }
+                                else
+                                {
+                                    <p>@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/@i.pro.Unit</p><br>
+                                }
+                            }
+                        </a>
+                    </div>
+                }
             }
         }
     </div>
 </div>
+
+<div class="small-container" style="margin-top: 5%;">
+    <h1 id="Featured" class="title">Trái Cây Ngoại</h1>
+    <div class="row" style="justify-content:center">
+        @{
+            foreach (ProductInfoViewModel i in ViewBag.Product)
+            {
+                if (i.Categories.Select(x => x.CategoryId).Contains(3))
+                {
+                    <div class="col-4 add-border">
+                        @{
+                            string link = url + $"proId={i.pro.ProductId}";
+                        }
+                        <a href="@link">
+                            @if (i.ListImages.Count() > 0)
+                            {
+                                <img src="@i.ListImages[0].imagepath" style="height:168px">
+                            }
+                            <h3>@i.pro.Title</h3>
+                            <div class="rating">
+                                @Rating_Stars(5)
+                            </div>
+                            @{
+                                if (i.Discount != 100 && i.Discount != 0)
+                                {
+                                    <p style="text-decoration: line-through;">@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/@i.pro.Unit</p>
+                                    <p>@Convert.ToDecimal(i.pro.OutputCount * (1 - (decimal)i.Discount / 100)).ToString("#,##0") VNĐ/@i.pro.Unit</p>
+                                }
+                                else
+                                {
+                                    <p>@Convert.ToDecimal(i.pro.OutputCount).ToString("#,##0") VNĐ/@i.pro.Unit</p><br>
+                                }
+
+                            }
+                        </a>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
 <div class="offer">
     <div class="row">
         <div class="col-2">
@@ -312,3 +351,76 @@
         </div>
     </div>
 </div>
+
+@{
+    string Rating_Stars(int rate)
+    {
+        string str = "";
+        switch (rate)
+        {
+            case 1:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 2:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 3:
+                {
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+                    <i class='fa fa-star-o'></i>
+                    break;
+                }
+            case 4:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star-o'></i>
+
+                    break;
+                }
+            case 5:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    break;
+                }
+            default:
+                {
+
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    <i class='fa fa-star'></i>
+                    break;
+                }
+
+        }
+        return str;
+    }
+
+}
