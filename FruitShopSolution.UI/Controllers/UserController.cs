@@ -26,7 +26,7 @@ namespace FruitShopSolution.UI.Controllers
             _proService = proService;
         }
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             var user = GetUserLogined();
             if (user.LastName == null)
@@ -55,13 +55,13 @@ namespace FruitShopSolution.UI.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             ClearSession();
             return RedirectToAction("Login", "User");
         }
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             return View();
         }
@@ -144,13 +144,13 @@ namespace FruitShopSolution.UI.Controllers
             }
             return new UserViewModel();
         }
-        public async Task<IActionResult> ViewProfile()
+        public IActionResult ViewProfile()
         {
             ViewBag.User = new SessionService(HttpContext.Session).GetUserLogined();
             ViewBag.ProductsCount = new SessionService(HttpContext.Session).GetCartItems().Count();
             return View();
         }
-        public async Task<IActionResult> ViewInfo()
+        public IActionResult ViewInfo()
         {
             ViewBag.User = new SessionService(HttpContext.Session).GetUserLogined();
             ViewBag.ProductsCount = new SessionService(HttpContext.Session).GetCartItems().Count();

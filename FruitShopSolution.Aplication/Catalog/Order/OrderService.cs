@@ -21,7 +21,7 @@ namespace FruitShopSolution.Application.Catalog.Order
             context = _context;
             _proService = service;
         }
-        public async Task<List<OrderViewModel>> GetOrders(int UserId)
+        public Task<List<OrderViewModel>> GetOrders(int UserId)
         {
             List<OrderViewModel> orders = new List<OrderViewModel>();
             var query = context.Orders.Where(x => x.UserId == UserId);
@@ -46,9 +46,9 @@ namespace FruitShopSolution.Application.Catalog.Order
                         Payment = i.Payment
                     }); ;
             }
-            return orders;
+            return Task.FromResult(orders);
         }
-        public async Task<List<OrderDetailViewModel>> GetOrderDetails(int OrderId)
+        public Task<List<OrderDetailViewModel>> GetOrderDetails(int OrderId)
         {
             List<OrderDetailViewModel> orderDetails = new List<OrderDetailViewModel>();
             var query = context.OrderDetails.Where(x => x.OrderId == OrderId);
@@ -67,7 +67,7 @@ namespace FruitShopSolution.Application.Catalog.Order
             {
                 i.Products = _proService.GetProductById(i.ProductId);
             }
-            return orderDetails;
+            return Task.FromResult(orderDetails);
         }
         public async Task<bool> DeleteOrder(int OrderId)
         {
@@ -130,7 +130,7 @@ namespace FruitShopSolution.Application.Catalog.Order
             return false;
         }
 
-        public async Task<List<OrderViewModel>> GetAllOrders()
+        public Task<List<OrderViewModel>> GetAllOrders()
         {
             List<OrderViewModel> orders = new List<OrderViewModel>();
             var query = from o in context.Orders select o;
@@ -155,10 +155,10 @@ namespace FruitShopSolution.Application.Catalog.Order
                         Payment=i.Payment
                     }); ;
             }
-            return orders;
+            return Task.FromResult(orders);
         }
 
-        public async Task<List<OrderViewModel>> GetOrderByStatus(int status)
+        public Task<List<OrderViewModel>> GetOrderByStatus(int status)
         {
             List<OrderViewModel> orders = new List<OrderViewModel>();
             var query = from o in context.Orders select o;
@@ -235,10 +235,10 @@ namespace FruitShopSolution.Application.Catalog.Order
                         Payment=i.Payment
                     }); ;
             }
-            return orders;
+            return Task.FromResult(orders);
         }
 
-        public async Task<OrderViewModel> GetOrderById(int id)
+        public Task<OrderViewModel> GetOrderById(int id)
         {
             OrderViewModel order = new OrderViewModel();
             var query = context.Orders.Where(x => x.OrderId == id);
@@ -261,7 +261,7 @@ namespace FruitShopSolution.Application.Catalog.Order
                         Payment=i.Payment
                     };
             }
-            return order;
+            return Task.FromResult(order);
         }
     }
 }

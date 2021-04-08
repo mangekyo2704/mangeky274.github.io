@@ -202,7 +202,7 @@ namespace FruitShopSolution.Application.Catalog.Products
             };
             return data;
         }
-        public async Task<List<ProductViewModel>> GetByCategory(int categoryId)
+        public Task<List<ProductViewModel>> GetByCategory(int categoryId)
         {
             List<ProductViewModel> listData = new List<ProductViewModel>();
             var query = from p in context.Products
@@ -227,7 +227,7 @@ namespace FruitShopSolution.Application.Catalog.Products
                 };
                 listData.Add(pro);
             }
-            return listData;
+            return Task.FromResult(listData);
         }
 
         public async Task<bool> UpdateOutputPrice(int productId, decimal newPrice)

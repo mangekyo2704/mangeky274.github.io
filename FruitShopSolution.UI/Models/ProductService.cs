@@ -69,7 +69,7 @@ namespace FruitShopSolution.UI.Models
                         return pageResult;*/
             return data;
         }
-        public async Task AddToCart(int proId, int userId)
+        public void AddToCart(int proId, int userId)
         {
 
         }
@@ -78,6 +78,7 @@ namespace FruitShopSolution.UI.Models
         {
             listProductInCart.Add(new CartViewModel() { Quantity = quantity, Products = pro });
         }
+
         public List<CartViewModel> GetProductsInCart()
         {
             return listProductInCart;
@@ -350,14 +351,13 @@ namespace FruitShopSolution.UI.Models
                 var comments = new Comment() { ProductId = ProductId, UserId = UserId, Text = text,Time_Comment = date };
                 string str = comments.Text;
                  context.Comments.Add(comments);
+                context.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 string err = e.Message;
             }
-                 context.SaveChanges();
-
-
+            
             return new CommentViewModel() { ProductId = ProductId, UserId = UserId, Text = text, Time_Comment = DateTime.Now };
         }
     }

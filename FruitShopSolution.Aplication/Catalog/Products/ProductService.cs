@@ -67,12 +67,12 @@ namespace FruitShopSolution.Application.Catalog.Products
                         return pageResult;*/
             return data;
         }
-        public async Task AddToCart(int proId, int userId)
+        public void AddToCart(int proId, int userId)
         {
 
         }
 
-        public async Task AddToCart(ProductInfoViewModel pro, int quantity)
+        public void AddToCart(ProductInfoViewModel pro, int quantity)
         {
             listProductInCart.Add(new CartViewModel() { Quantity = quantity, Products = pro });
         }
@@ -81,7 +81,7 @@ namespace FruitShopSolution.Application.Catalog.Products
             return listProductInCart;
         }
 
-        public async Task<bool> FindProductInCart(int proId)
+        public bool FindProductInCart(int proId)
         {
             var query = context.Carts.Where(x => x.ProductId == proId);
             if (query.Count() > 0)
@@ -123,7 +123,7 @@ namespace FruitShopSolution.Application.Catalog.Products
             }
             return listData;
         }
-        public async Task<List<CategoriesViewModel>> GetCategoryId(int ProductId)
+        public List<CategoriesViewModel> GetCategoryId(int ProductId)
         {
             var query = from c in context.Categories
                         join pt in context.ProductInCategories on c.CategoryId equals pt.CategoryId
@@ -143,7 +143,7 @@ namespace FruitShopSolution.Application.Catalog.Products
             }
             return categories;
         }
-        public async Task<List<ProductInfoViewModel>> GetByCategory(int categoryId)
+        public List<ProductInfoViewModel> GetByCategory(int categoryId)
         {
             List<ProductInfoViewModel> listData = new List<ProductInfoViewModel>();
             List<ProductViewModel> listpro = new List<ProductViewModel>();
@@ -238,7 +238,7 @@ namespace FruitShopSolution.Application.Catalog.Products
             return info;
         }
 
-        public async Task<List<ProductInfoViewModel>> Searching(string keyword)
+        public List<ProductInfoViewModel> Searching(string keyword)
         {
             var query = from p in context.Products select p;
             query = query.Where(x => x.Title.Contains(keyword));
@@ -336,7 +336,7 @@ namespace FruitShopSolution.Application.Catalog.Products
 
         }
 
-        public async Task<CommentViewModel> Comment(int ProductId, string text, int UserId)
+        public CommentViewModel Comment(int ProductId, string text, int UserId)
         {
             try
             {

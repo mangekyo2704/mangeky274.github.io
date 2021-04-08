@@ -12,16 +12,16 @@ namespace FruitShopSolution.Application.Catalog.Products
     {
         public List<ProductInfoViewModel> GetAllProduct();
         public ProductInfoViewModel GetProductById(int proId);
-        public Task<List<ProductInfoViewModel>> Searching(string keyword);
-        public Task AddToCart(ProductInfoViewModel pro, int quantity);
+        public List<ProductInfoViewModel> Searching(string keyword);
+        public void AddToCart(ProductInfoViewModel pro, int quantity);
         public List<CartViewModel> GetProductsInCart();
         public Task<List<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
         public List<ProductImageViewModel> GetListProductImages(int productId);
-        public Task<bool> FindProductInCart(int proId);
+        public bool FindProductInCart(int proId);
         public Task<int> CreateOrder(CreateOrderRequest request);
         public Task<List<CommentViewModel>> GetComment(int ProductId);
-        public Task<CommentViewModel> Comment(int ProductId, string text, int UserId);
-        Task<List<ProductInfoViewModel>> GetByCategory(int categoryId);
-        Task<List<CategoriesViewModel>> GetCategoryId(int ProductId);
+        public CommentViewModel Comment(int ProductId, string text, int UserId);
+        List<ProductInfoViewModel> GetByCategory(int categoryId);
+        List<CategoriesViewModel> GetCategoryId(int ProductId);
     }
 }

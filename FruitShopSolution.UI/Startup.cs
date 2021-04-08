@@ -52,7 +52,7 @@ namespace FruitShopSolution.UI
             // đăng ký để Inject
             services.AddControllersWithViews();
             services.AddDbContext<FruitShopDbContext>(options =>
-        options.UseSqlServer("Data Source =.\\sqlexpress; Initial Catalog = FruitShopDatabase; Integrated Security = True"));
+        options.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddTransient<Application.Catalog.Products.IProductService, Application.Catalog.Products.ProductService>();
             services.AddTransient<Models.IProductService, Models.ProductService>();
             services.AddTransient<ISendMailService, SendMailService>();

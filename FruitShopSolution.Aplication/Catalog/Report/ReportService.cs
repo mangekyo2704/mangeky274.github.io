@@ -17,7 +17,7 @@ namespace FruitShopSolution.Application.Catalog.Report
         {
             _context = context;
         }
-        public async Task<ReportViewModel> GetRevenuePerDay(DateTime date)
+        public Task<ReportViewModel> GetRevenuePerDay(DateTime date)
         {
             /*           var query = from o in _context.Orders
                                    join od in _context.OrderDetails on o.OrderId equals od.OrderId
@@ -62,9 +62,9 @@ namespace FruitShopSolution.Application.Catalog.Report
             report.Date = date;
 
             report.Profit = report.TotalRevenue - report.Capital;
-            return report;
+            return Task.FromResult(report);
         }
-        public async Task<ReportViewModel> GetRevenueFromDays(DateTime date1,DateTime date2)
+        public Task<ReportViewModel> GetRevenueFromDays(DateTime date1,DateTime date2)
         {
 
             var query = _context.Orders.Where(x => x.OrderDate.Date <= date1.Date && x.OrderDate >= date2.Date);
@@ -98,7 +98,7 @@ namespace FruitShopSolution.Application.Catalog.Report
             };
             report.Date = date;
             report.Profit = report.TotalRevenue - report.Capital;
-            return report;
+            return Task.FromResult(report);
         }
     }
 }

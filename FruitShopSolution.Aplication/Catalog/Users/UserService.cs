@@ -15,14 +15,14 @@ namespace FruitShopSolution.Application.Catalog.Users
         {
             _context = context;
         }
-        public async Task<UserViewModel> Accuracy(LoginRequest loginRequest)
+        public Task<UserViewModel> Accuracy(LoginRequest loginRequest)
         {
-            if(loginRequest.UserName == null || loginRequest.Password == null) throw new Exception("Vui lòng nhập đầy đủ");
+            if (loginRequest.UserName == null || loginRequest.Password == null) throw new Exception("Vui lòng nhập đầy đủ");
             var query = from u in _context.Users where u.UserName == loginRequest.UserName select u;
             var user = query.FirstOrDefault();
             if (user == null) throw new Exception("User chua duoc dang ky");
             if (user.Password == loginRequest.Password)
-                return new UserViewModel()
+                return Task.FromResult(new UserViewModel()
                 {
                     UserId = user.UserId,
                     UserName = user.UserName,
@@ -35,9 +35,9 @@ namespace FruitShopSolution.Application.Catalog.Users
                     Phone = user.Phone,
                     Gender = user.Gender,
                     Address = user.Address
-                };
+                });
             else
-                 throw new Exception("Password chua duoc dang ky"); ;
+                throw new Exception("Password chua duoc dang ky"); ;
         }
         public async Task<List<UserViewModel>> GetAll()
         {
@@ -142,5 +142,7 @@ namespace FruitShopSolution.Application.Catalog.Users
             if(await _context.SaveChangesAsync()<=0) throw new Exception("Cập nhật thất bại");
             return true;
         }
+
+      
     }
 }

@@ -44,10 +44,10 @@ namespace FruitShopSolution.Application.Catalog.Cart
             if(await context.SaveChangesAsync()<0) throw new Exception("Xoa khong thanh cong");
         }
 
-        public async Task<List<CartItems>> GetItems(int id)
+        public Task<List<CartItems>> GetItems(int id)
         {
             var query = context.Carts.Where(c => c.UserId == id);
-            if (query.Count() <= 0) return new List<CartItems>();
+            if (query.Count() <= 0) return Task.FromResult(new List<CartItems>());
             List<CartItems> cartItems = new List<CartItems>();
             foreach(var i in query)
             {
@@ -71,7 +71,7 @@ namespace FruitShopSolution.Application.Catalog.Cart
                 var car = new CartItems() { ProductId = i.ProductId, UserId = i.UserId };
                 cartItems.Add(car);
             }
-            return cartItems;
+            return Task.FromResult(cartItems);
         }
 
         public Task Update(int id)

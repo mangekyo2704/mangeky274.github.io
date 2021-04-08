@@ -36,7 +36,7 @@ namespace FruitShopSolution.Application.Common
             return $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
         }
 
-        public async Task SaveFileAsync(Stream mediaBinaryStream, string fileName)
+        public Task SaveFileAsync(Stream mediaBinaryStream, string fileName)
         {
             var filePath = Path.Combine(_userContentFolder, fileName);
             var filePath2 = Path.Combine(_userContentFolder2, fileName);
@@ -45,6 +45,7 @@ namespace FruitShopSolution.Application.Common
             string url = _userContentFolder + "/" + fileName;
             string url2 = _userContentFolder2 + "/" + fileName;
             File.Copy(filePath, filePath2, true);
+            return Task.CompletedTask;
         }
     }
 }

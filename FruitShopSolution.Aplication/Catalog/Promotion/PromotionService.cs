@@ -110,7 +110,7 @@ namespace FruitShopSolution.Application.Catalog.Promotion
             }
             return promotions;
         }
-        public async Task<int> GetPromotionOfProduct(int proId)
+        public Task<int> GetPromotionOfProduct(int proId)
         {
             try { 
             var query =  from a in context.Promotions
@@ -121,14 +121,14 @@ namespace FruitShopSolution.Application.Catalog.Promotion
                   query = query.Where(x => x.Status == 1);
                 if (query.Count() >0) {
                     
-                    return query.FirstOrDefault().DiscountPercent;
+                    return Task.FromResult(query.FirstOrDefault().DiscountPercent);
                 }
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
-                return 100;
+                return Task.FromResult(100);
             }
-            return 100;
+            return Task.FromResult(100);
         }
 
         public async Task<List<int>> GetListProductIdInPromotion(int promotionId)

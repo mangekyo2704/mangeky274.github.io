@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FruitShopSolution.Application.Catalog.Cart;
-using FruitShopSolution.Application.Catalog.Products;
 using FruitShopSolution.Application.Catalog.Promotion;
 using FruitShopSolution.UI.Models;
 using FruitShopSolution.ViewModel.Catalog.Products;
@@ -11,7 +9,6 @@ using FruitShopSolution.ViewModel.Catalog.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using FruitShopSolution.UI.Models;
 
 namespace FruitShopSolution.UI.Controllers
 {
