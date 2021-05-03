@@ -29,16 +29,16 @@ namespace FruitShopSolution.WebApp.Controllers
             return View(await _userService.GetById(id));
         }
 
-        /*        public async Task<IActionResult> Delete(int id)
-                {
-                    var result = await _userService.Delete(id);
-                    if (result > 0)
-                    {
-                        TempData["result"] = "Xoá sản phẩm thành công";
-                    }
-                    else TempData["result"] = "Xoá sản phẩm thất bại";
-                    return RedirectToAction("Index");
-                }*/
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _userService.Delete(id);
+            if (result > 0)
+            {
+                TempData["result"] = "Xoá sản phẩm thành công";
+            }
+            else TempData["result"] = "Xoá sản phẩm thất bại";
+            return RedirectToAction("Index");
+        }
     }
 
 }

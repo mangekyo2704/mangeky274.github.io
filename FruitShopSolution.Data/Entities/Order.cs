@@ -18,7 +18,7 @@ namespace FruitShopSolution.Data.Entities
         public int Discount { get; set; }
         public decimal ShipPrice { get; set; }
         public decimal  TotalPrice { get; set; }
-        public User User { get; set; }
+        public AppUser User { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -79,12 +79,12 @@ namespace FruitShopSolution.Application.Catalog.Users
 
         public async Task<bool> Register(RegisterRequest registerRequest)
         {
-            /*            var username = await _context.Users.FindAsync(registerRequest.UserName);
-                        if (username != null) throw new Exception("User da duoc dang ky");
-                        var email = await _context.Users.FindAsync(registerRequest.Email);
-                        if (email != null) throw new Exception("Email da duoc dang ky");
-                        var phone = await _context.Users.FindAsync(registerRequest.Phone);
-                        if (phone != null) throw new Exception("Phone da duoc dang ky");*/
+            var username = await _context.Users.FindAsync(registerRequest.UserName);
+            if (username != null) throw new Exception("User da duoc dang ky");
+            var email = await _context.Users.FindAsync(registerRequest.Email);
+            if (email != null) throw new Exception("Email da duoc dang ky");
+            var phone = await _context.Users.FindAsync(registerRequest.Phone);
+            if (phone != null) throw new Exception("Phone da duoc dang ky");
             var query = from u in _context.Users select u;
             if (!String.IsNullOrEmpty(registerRequest.UserName))
             {
@@ -92,7 +92,7 @@ namespace FruitShopSolution.Application.Catalog.Users
                 Console.WriteLine(query.Count());
             }
             if (query.Count() > 0) throw new Exception("User da duoc dang ky");
-            var user = new User
+            var user = new AppUser
             {
                 FristName = registerRequest.FristName,
                 LastName = registerRequest.LastName,

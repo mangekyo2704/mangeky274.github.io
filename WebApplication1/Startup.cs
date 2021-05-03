@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FruitShopSolution.Application.Catalog.Admin;
-using FruitShopSolution.Application.Catalog.Categories;
-using FruitShopSolution.Application.Catalog.Products;
-using FruitShopSolution.Application.Catalog.Users;
-using FruitShopSolution.Application.Common;
 using FruitShopSolution.Data.EF;
 using FruitShopSolution.Data.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace FruitShopSolution.WebApp
+namespace WebApplication1
 {
     public class Startup
     {
@@ -32,8 +27,9 @@ namespace FruitShopSolution.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
             services.AddDbContext<FruitShopDbContext>(options =>
-        options.UseSqlServer("Data Source =.\\sqlexpress; Initial Catalog = FruitShopDatabase2; Integrated Security = True"));
+options.UseSqlServer("Data Source =.\\sqlexpress; Initial Catalog = FruitShopDatabase2; Integrated Security = True"));
             services.AddIdentity<AppUser, IdentityRole<int>>()
                     .AddEntityFrameworkStores<FruitShopDbContext>()
                     .AddDefaultTokenProviders();
@@ -61,16 +57,6 @@ namespace FruitShopSolution.WebApp
                 options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
 
             });
-            services.AddControllersWithViews();
-            services.AddTransient<IProductPublicService, PublicProductService>();
-            services.AddTransient<IProductManageService, ManageProductService>();
-            //services.AddTransient<IProductImageService, ProductImageService>();
-            services.AddTransient<IStorageService, StorageService>();
-            //services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IAdminService, AdminService>();
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddRazorPages()
-        .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,17 +74,17 @@ namespace FruitShopSolution.WebApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseRouting();
-
             app.UseAuthentication();   // Phục hồi thông tin đăng nhập (xác thực)
             app.UseAuthorization();   // Phục hồi thông tinn về quyền của User
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Admin}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

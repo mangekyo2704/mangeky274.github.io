@@ -72,16 +72,16 @@ namespace FruitShopSolution.Data.Extensions
                     CategoryId = 1,
                     ProductId = 2
                 });
-            builder.Entity<User>().HasData(
-                new User
+            builder.Entity<AppUser>().HasData(
+                new AppUser
                 {
-                    UserId = 1,
+                    Id = 1,
                     FristName = "Chu Nam",
                     LastName = "Thắng",
                     Email = "chunamthang2000@gmail.com",
-                    Phone = "09292921031",
+                    PhoneNumber = "09292921031",
                     UserName = "thanguit",
-                    Password = "12345"
+                    PasswordHash = "12345"
 
                 });
             builder.Entity<Cart>().HasData(

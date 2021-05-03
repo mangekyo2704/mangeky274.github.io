@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\user-content\" />
+    <ProjectReference Include="..\FruitShopSolution.Data\FruitShopSolution.Data.csproj" />
   </ItemGroup>
 
 </Project>
